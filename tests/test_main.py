@@ -1,10 +1,13 @@
 from unittest.mock import MagicMock, patch
+from urllib.error import HTTPError
 
 from sentinelpy.main import (
     check_security_headers,
     fetch_headers,
     normalize_url,
 )
+
+
 def test_adds_https_when_scheme_is_missing():
     # FI: Tarkistetaan, että HTTPS lisätään automaattisesti.
     # RU: Проверяем, что HTTPS добавляется автоматически.
@@ -15,7 +18,8 @@ def test_keeps_existing_https():
     # FI: Tarkistetaan, ettei olemassa olevaa HTTPS-protokollaa muuteta.
     # RU: Проверяем, что существующий HTTPS не изменяется.
     assert normalize_url("https://example.com") == "https://example.com"
-    
+
+
 def test_detects_present_security_headers():
     # FI: Tarkistetaan, että olemassa oleva turvaotsikko tunnistetaan.
     # RU: Проверяем, что существующий защитный заголовок определяется.
@@ -38,7 +42,8 @@ def test_detects_missing_security_header():
     result = check_security_headers(headers)
 
     assert result["Content-Security-Policy"] is False
-    
+
+
 def test_fetch_headers_returns_response_headers():
     # FI: Korvataan oikea verkkopyyntö testissä keinotekoisella vastauksella.
     # RU: В тесте заменяем настоящий сетевой запрос искусственным ответом.
@@ -64,4 +69,22 @@ def test_fetch_headers_returns_response_headers():
 
     assert result["Content-Type"] == "text/html"
     assert result["X-Content-Type-Options"] == "nosniff"
-    
+
+
+def test_fetch_headers_returns_headers_from_http_error():
+    # FI: Luodaan keinotekoinen HTTP 404 -virhe otsikoilla.
+    # RU: Создаём искусственную HTTP-ошибку 404 с заголовками.
+    error = HTTPError(
+        url="https://example.com",
+        code=404,
+        msg="Not Found",
+        hdrs={"Content-Security-Policy": "default-src 'self'"},
+        fp=None,
+    )
+
+    # FI: Korvataan urlopen niin, että se nostaa HTTPError-poikkeuksen.
+    # RU: Подменяем urlopen так, чтобы он выбрасывал HTTPError.
+    with patch("sentinelpy.main.urlopen", side_effect=error):
+        result = fetch_headers("example.com")
+
+    assert result["Content-Security-Policy"] == "default-src 'self'"

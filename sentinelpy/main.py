@@ -6,6 +6,7 @@ Created on Mon Aug 31 17:28:15 2026
 @author: omea-ubuntu
 """
 
+from urllib.error import HTTPError
 from urllib.parse import urlparse
 from urllib.request import Request, urlopen
 
@@ -71,10 +72,13 @@ def fetch_headers(url: str) -> dict[str, str]:
         normalized_url,
         headers={"User-Agent": "SentinelPy/0.1"},
     )
+    try:
+        # FI: Lähetetään HTTP-pyyntö ja palautetaan vastauksen otsikot.
+        # RU: Отправляем HTTP-запрос и возвращаем заголовки ответа.
+        with urlopen(request, timeout=10) as response:
+            return dict(response.headers.items())
 
-    # FI: Lähetetään pyyntö ja luetaan HTTP-vastauksen otsikot.
-    # RU: Отправляем запрос и читаем заголовки HTTP-ответа.
-    with urlopen(request, timeout=10) as response:
-        return dict(response.headers.items())
-    
-    
+    except HTTPError as error:
+        # FI: HTTP-virhe sisältää silti palvelimen vastausotsikot.
+        # RU: HTTP-ошибка всё равно содержит заголовки ответа сервера.
+        return dict(error.headers.items())
