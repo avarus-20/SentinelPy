@@ -1,0 +1,16 @@
+# FI: Pythonin virtuaaliympäristöä ei tallenneta Git-repositorioon.
+# RU: Виртуальное окружение Python не сохраняется в Git-репозитории.
+.venv/
+
+# FI: Pythonin välimuistitiedostot.
+# RU: Файлы кэша Python.
+__pycache__/
+*.pyc
+
+# FI: Testityökalujen välimuistit.
+# RU: Кэш инструментов тестирования.
+.pytest_cache/
+
+# FI: Spyderin paikalliset projektiasetukset.
+# RU: Локальные настройки проекта Spyder.
+.spyproject/
