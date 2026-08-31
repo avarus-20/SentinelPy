@@ -7,6 +7,7 @@ Created on Mon Aug 31 17:28:15 2026
 """
 
 from urllib.parse import urlparse
+from urllib.request import Request, urlopen
 
 
 def normalize_url(url: str) -> str:
@@ -54,3 +55,26 @@ def check_security_headers(headers: dict[str, str]) -> dict[str, bool]:
         header: header.lower() in normalized_headers
         for header in SECURITY_HEADERS
     }
+
+
+def fetch_headers(url: str) -> dict[str, str]:
+    """
+    FI: Lähettää HTTP-pyynnön ja palauttaa palvelimen vastausotsikot.
+    RU: Отправляет HTTP-запрос и возвращает заголовки ответа сервера.
+    """
+
+    normalized_url = normalize_url(url)
+
+    # FI: Luodaan HTTP-pyyntö, jossa käytetään omaa User-Agent-arvoa.
+    # RU: Создаём HTTP-запрос со своим значением User-Agent.
+    request = Request(
+        normalized_url,
+        headers={"User-Agent": "SentinelPy/0.1"},
+    )
+
+    # FI: Lähetetään pyyntö ja luetaan HTTP-vastauksen otsikot.
+    # RU: Отправляем запрос и читаем заголовки HTTP-ответа.
+    with urlopen(request, timeout=10) as response:
+        return dict(response.headers.items())
+    
+    
