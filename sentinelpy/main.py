@@ -79,7 +79,13 @@ def fetch_headers(url: str) -> dict[str, str]:
         return dict(error.headers.items())
 
     except URLError as error:
-        # Convert low-level network failures into a clear application error.
+        # Report request timeouts separately from other network failures.
+        if isinstance(error.reason, TimeoutError):
+            raise TimeoutError(
+                "Request timed out after 10 seconds"
+            ) from error
+
+        # Convert other low-level network failures into a clear application error.
         raise ConnectionError(
             f"Unable to reach target: {error.reason}"
         ) from error
