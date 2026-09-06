@@ -78,6 +78,7 @@ def fetch_headers(url: str) -> dict[str, str]:
         # HTTP error responses can still contain useful headers.
         return dict(error.headers.items())
 
+
 def scan_site(url: str) -> dict[str, object]:
     """
     Scan a website and return a structured security result.
