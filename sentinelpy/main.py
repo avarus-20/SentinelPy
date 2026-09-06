@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Mon Aug 31 17:28:15 2026
 
-@author: omea-ubuntu
+"""
+SentinelPy core website security utilities.
 """
 
 from urllib.error import HTTPError
@@ -13,25 +12,23 @@ from urllib.request import Request, urlopen
 
 def normalize_url(url: str) -> str:
     """
-    FI: Normalisoi käyttäjän antaman URL-osoitteen.
-    RU: Нормализует URL-адрес, введённый пользователем.
+    Normalize a user-provided URL.
     """
 
     url = url.strip()
 
-    # FI: Jos protokollaa ei ole annettu, käytetään HTTPS:ää oletuksena.
-    # RU: Если протокол не указан, по умолчанию используется HTTPS.
+    # Use HTTPS by default when no scheme is provided.
     if not url.startswith(("http://", "https://")):
         url = f"https://{url}"
 
     parsed = urlparse(url)
 
-    # FI: Varmistetaan, että osoitteessa on verkkotunnus.
-    # RU: Проверяем, что URL содержит доменное имя.
+    # Ensure that the URL contains a network location.
     if not parsed.netloc:
         raise ValueError("Invalid URL")
 
     return url
+
 
 SECURITY_HEADERS = (
     "Strict-Transport-Security",
@@ -44,13 +41,14 @@ SECURITY_HEADERS = (
 
 def check_security_headers(headers: dict[str, str]) -> dict[str, bool]:
     """
-    FI: Tarkistaa, löytyvätkö tärkeät HTTP-turvaotsikot vastauksesta.
-    RU: Проверяет наличие основных защитных HTTP-заголовков в ответе.
+    Check whether important HTTP security headers are present.
     """
 
-    # FI: HTTP-otsikoiden kirjainkoko ei saa vaikuttaa tarkistukseen.
-    # RU: Регистр букв в HTTP-заголовках не должен влиять на проверку.
-    normalized_headers = {key.lower(): value for key, value in headers.items()}
+    # HTTP header names are case-insensitive.
+    normalized_headers = {
+        key.lower(): value
+        for key, value in headers.items()
+    }
 
     return {
         header: header.lower() in normalized_headers
@@ -60,25 +58,22 @@ def check_security_headers(headers: dict[str, str]) -> dict[str, bool]:
 
 def fetch_headers(url: str) -> dict[str, str]:
     """
-    FI: Lähettää HTTP-pyynnön ja palauttaa palvelimen vastausotsikot.
-    RU: Отправляет HTTP-запрос и возвращает заголовки ответа сервера.
+    Send an HTTP request and return the server response headers.
     """
 
     normalized_url = normalize_url(url)
 
-    # FI: Luodaan HTTP-pyyntö, jossa käytetään omaa User-Agent-arvoa.
-    # RU: Создаём HTTP-запрос со своим значением User-Agent.
+    # Identify SentinelPy with a custom User-Agent header.
     request = Request(
         normalized_url,
         headers={"User-Agent": "SentinelPy/0.1"},
     )
+
     try:
-        # FI: Lähetetään HTTP-pyyntö ja palautetaan vastauksen otsikot.
-        # RU: Отправляем HTTP-запрос и возвращаем заголовки ответа.
+        # Return headers from a successful HTTP response.
         with urlopen(request, timeout=10) as response:
             return dict(response.headers.items())
 
     except HTTPError as error:
-        # FI: HTTP-virhe sisältää silti palvelimen vastausotsikot.
-        # RU: HTTP-ошибка всё равно содержит заголовки ответа сервера.
+        # HTTP error responses can still contain useful headers.
         return dict(error.headers.items())

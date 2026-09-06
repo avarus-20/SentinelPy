@@ -68,8 +68,7 @@ for header, present in result.items():
     print(f"{header}: {'present' if present else 'missing'}")
 ```
 
-FI: Tätä voi käyttää toisesta Python-tiedostosta tuomalla tarvittavat funktiot.
-RU: Это можно использовать из другого Python-файла, импортируя нужные функции.
+These functions can be imported and reused from another Python module.
 
 ## Run tests
 
