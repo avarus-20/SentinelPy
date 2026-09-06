@@ -87,5 +87,4 @@ tool and does not guarantee that a website is secure. It only checks a small set
 
 ## License
 
-No open-source license has been added yet. Until a license is added, the code is published for portfolio viewing
-but not for copying, redistribution, or commercial reuse.
+This project is licensed under the MIT License. See [LICENSE](LICENSE).
