@@ -1,5 +1,5 @@
 from unittest.mock import MagicMock, patch
-from urllib.error import HTTPError
+from urllib.error import HTTPError, URLError
 
 from sentinelpy.main import (
     check_security_headers,
@@ -94,3 +94,14 @@ def test_scan_site_returns_structured_result():
     assert result["headers"] == fake_headers
     assert result["security_headers"]["Strict-Transport-Security"] is True
     assert result["security_headers"]["Content-Security-Policy"] is False
+
+def test_fetch_headers_raises_connection_error_on_url_error():
+    # Simulate a low-level network failure.
+    error = URLError("Name or service not known")
+
+    with patch("sentinelpy.main.urlopen", side_effect=error):
+        try:
+            fetch_headers("example.com")
+            assert False, "Expected ConnectionError"
+        except ConnectionError as connection_error:
+            assert "Unable to reach target" in str(connection_error)

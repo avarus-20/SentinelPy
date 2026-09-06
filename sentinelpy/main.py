@@ -5,7 +5,7 @@
 SentinelPy core website security utilities.
 """
 
-from urllib.error import HTTPError
+from urllib.error import HTTPError, URLError
 from urllib.parse import urlparse
 from urllib.request import Request, urlopen
 
@@ -77,6 +77,12 @@ def fetch_headers(url: str) -> dict[str, str]:
     except HTTPError as error:
         # HTTP error responses can still contain useful headers.
         return dict(error.headers.items())
+
+    except URLError as error:
+        # Convert low-level network failures into a clear application error.
+        raise ConnectionError(
+            f"Unable to reach target: {error.reason}"
+        ) from error
 
 
 def scan_site(url: str) -> dict[str, object]:
