@@ -105,3 +105,14 @@ def test_fetch_headers_raises_connection_error_on_url_error():
             assert False, "Expected ConnectionError"
         except ConnectionError as connection_error:
             assert "Unable to reach target" in str(connection_error)
+
+def test_fetch_headers_raises_timeout_error_on_timeout():
+    # Simulate a request timeout without waiting for a real network delay.
+    error = URLError(TimeoutError("timed out"))
+
+    with patch("sentinelpy.main.urlopen", side_effect=error):
+        try:
+            fetch_headers("example.com")
+            assert False, "Expected TimeoutError"
+        except TimeoutError as timeout_error:
+            assert str(timeout_error) == "Request timed out after 10 seconds"
