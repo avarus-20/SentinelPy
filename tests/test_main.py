@@ -5,6 +5,7 @@ from sentinelpy.main import (
     check_security_headers,
     fetch_headers,
     normalize_url,
+    scan_site,
 )
 
 
@@ -78,3 +79,18 @@ def test_fetch_headers_returns_headers_from_http_error():
         result = fetch_headers("example.com")
 
     assert result["Content-Security-Policy"] == "default-src 'self'"
+
+def test_scan_site_returns_structured_result():
+    # Use a mocked response to avoid a real network request.
+    fake_headers = {
+        "Strict-Transport-Security": "max-age=31536000",
+        "X-Content-Type-Options": "nosniff",
+    }
+
+    with patch("sentinelpy.main.fetch_headers", return_value=fake_headers):
+        result = scan_site("example.com")
+
+    assert result["url"] == "https://example.com"
+    assert result["headers"] == fake_headers
+    assert result["security_headers"]["Strict-Transport-Security"] is True
+    assert result["security_headers"]["Content-Security-Policy"] is False

@@ -77,3 +77,18 @@ def fetch_headers(url: str) -> dict[str, str]:
     except HTTPError as error:
         # HTTP error responses can still contain useful headers.
         return dict(error.headers.items())
+
+def scan_site(url: str) -> dict[str, object]:
+    """
+    Scan a website and return a structured security result.
+    """
+
+    normalized_url = normalize_url(url)
+    headers = fetch_headers(normalized_url)
+    security_headers = check_security_headers(headers)
+
+    return {
+        "url": normalized_url,
+        "headers": headers,
+        "security_headers": security_headers,
+    }
