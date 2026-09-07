@@ -116,3 +116,16 @@ def test_fetch_headers_raises_timeout_error_on_timeout():
             assert False, "Expected TimeoutError"
         except TimeoutError as timeout_error:
             assert str(timeout_error) == "Request timed out after 10 seconds"
+
+
+def test_fetch_headers_raises_timeout_error_on_direct_timeout():
+    # FI: Simuloi urlopen()-funktion suoraan nostama aikakatkaisu.
+    # RU: Имитируем таймаут, который urlopen() выбрасывает напрямую.
+    error = TimeoutError("timed out")
+
+    with patch("sentinelpy.main.urlopen", side_effect=error):
+        try:
+            fetch_headers("example.com")
+            assert False, "Expected TimeoutError"
+        except TimeoutError as timeout_error:
+            assert str(timeout_error) == "Request timed out after 10 seconds"
