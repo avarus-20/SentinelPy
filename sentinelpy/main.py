@@ -78,6 +78,13 @@ def fetch_headers(url: str) -> dict[str, str]:
         # HTTP error responses can still contain useful headers.
         return dict(error.headers.items())
 
+    except TimeoutError as error:
+        # FI: Käsittele urlopen()-funktion suoraan nostama aikakatkaisu.
+        # RU: Обрабатываем таймаут, который urlopen() выбросил напрямую.
+        raise TimeoutError(
+            "Request timed out after 10 seconds"
+        ) from error
+
     except URLError as error:
         # Report request timeouts separately from other network failures.
         if isinstance(error.reason, TimeoutError):
