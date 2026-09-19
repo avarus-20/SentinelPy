@@ -2,6 +2,14 @@
 
 All notable changes to this project are documented here.
 
+## [1.0.1] - 2026-09-19
+
+### Fixed
+
+- Never embed Content-Security-Policy body text in public finding evidence.
+- Evaluate HSTS using the final response URL scheme after redirects.
+- Return structured invalid-target error reports for malformed URLs.
+
 ## [1.0.0] - 2026-09-19
 
 ### Added

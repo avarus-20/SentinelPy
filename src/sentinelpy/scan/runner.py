@@ -14,7 +14,7 @@ from sentinelpy.exceptions import (
 )
 from sentinelpy.http.client import FetchOptions, fetch
 from sentinelpy.http.snapshot import SecurityHeaderSnapshot
-from sentinelpy.http.url import normalize_url, target_scheme
+from sentinelpy.http.url import normalize_url
 from sentinelpy.models.report import (
     ErrorCategory,
     ScanErrorInfo,
@@ -49,7 +49,7 @@ def run_scan(target: str, *, options: ScanOptions | None = None) -> ScanReport:
 
     try:
         normalized = normalize_url(target)
-    except InvalidTargetError:
+    except (InvalidTargetError, ValueError):
         return _error_report(
             scanned_at=scanned_at,
             target_url=None,
@@ -109,8 +109,10 @@ def run_scan(target: str, *, options: ScanOptions | None = None) -> ScanReport:
         )
 
     snapshot = SecurityHeaderSnapshot.from_header_map(response.headers)
-    scheme = target_scheme(normalized)
-    findings = evaluate_security_findings(snapshot, target_scheme=scheme)
+    findings = evaluate_security_findings(
+        snapshot,
+        target_scheme=response.final_scheme,
+    )
     summary = summarize_findings(findings)
 
     return ScanReport(

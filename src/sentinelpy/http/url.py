@@ -29,8 +29,12 @@ def normalize_url(url: str) -> str:
     else:
         url = f"https://{url}"
 
-    parsed = urlparse(url)
-    if not parsed.netloc:
+    try:
+        parsed = urlparse(url)
+    except ValueError as error:
+        raise InvalidTargetError("Invalid URL") from error
+
+    if not parsed.netloc or parsed.netloc in {"[", "]"}:
         raise InvalidTargetError("Invalid URL")
 
     return url
