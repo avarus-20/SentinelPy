@@ -4,10 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sentinelpy"
-version = "0.2.0"
+version = "0.3.0"
 description = "A Python tool for checking common website security configurations."
 readme = "README.md"
 requires-python = ">=3.11"
+
+[project.scripts]
+sentinelpy = "sentinelpy.cli.app:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
