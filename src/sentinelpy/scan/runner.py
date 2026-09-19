@@ -5,7 +5,7 @@ from __future__ import annotations
 from datetime import UTC, datetime
 
 from sentinelpy._version import __version__
-from sentinelpy.checks.presence import evaluate_presence_findings
+from sentinelpy.checks.quality import evaluate_security_findings
 from sentinelpy.exceptions import (
     InvalidTargetError,
     NetworkError,
@@ -110,7 +110,7 @@ def run_scan(target: str, *, options: ScanOptions | None = None) -> ScanReport:
 
     snapshot = SecurityHeaderSnapshot.from_header_map(response.headers)
     scheme = target_scheme(normalized)
-    findings = evaluate_presence_findings(snapshot, target_scheme=scheme)
+    findings = evaluate_security_findings(snapshot, target_scheme=scheme)
     summary = summarize_findings(findings)
 
     return ScanReport(
