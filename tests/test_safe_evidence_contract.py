@@ -61,6 +61,36 @@ def test_normalize_url_rejects_bracket_host():
         normalize_url("http://[")
 
 
+def test_run_scan_json_never_includes_csp_secrets():
+    sensitive_csp = (
+        "default-src 'self'; report-uri https://x.com/?token=secret; "
+        "script-src 'nonce-abc123secret'"
+    )
+    headers = {
+        "Content-Security-Policy": sensitive_csp,
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY",
+        "Referrer-Policy": "no-referrer",
+        "Strict-Transport-Security": "max-age=31536000",
+    }
+    response = HttpResponse(
+        target_url="https://example.com/",
+        final_url="https://example.com/",
+        final_scheme="https",
+        status=200,
+        headers=headers,
+        redirects=(),
+        elapsed_ms=1.0,
+    )
+    with patch("sentinelpy.scan.runner.fetch", return_value=response):
+        report = run_scan("https://example.com")
+
+    payload = render_json(report)
+    assert "secret" not in payload
+    assert "nonce" not in payload
+    assert "report-uri" not in payload
+
+
 def test_run_scan_rejects_invalid_port():
     report = run_scan("http://user@example.com:bad")
 

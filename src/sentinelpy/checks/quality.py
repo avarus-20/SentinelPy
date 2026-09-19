@@ -336,6 +336,25 @@ def _referrer_policy_finding(snapshot: SecurityHeaderSnapshot) -> Finding:
             reference=_OWASP_CHEATSHEET,
         )
     effective = _effective_referrer_policy(value)
+    if effective is None:
+        return Finding(
+            id="HEADER-RP",
+            title="Referrer-Policy value is not recognized",
+            severity="low",
+            status="warning",
+            evidence=EvidenceBuilder.for_presence(
+                "Referrer-Policy",
+                present=True,
+                raw_value=value,
+            ).to_dict(),
+            explanation=(
+                "The header was sent but contained no policy name browsers understand."
+            ),
+            remediation=(
+                "Use a known Referrer-Policy token such as strict-origin-when-cross-origin."
+            ),
+            reference=_OWASP_CHEATSHEET,
+        )
     if effective in _PERMISSIVE_REFERRER_POLICIES:
         return Finding(
             id="HEADER-RP",

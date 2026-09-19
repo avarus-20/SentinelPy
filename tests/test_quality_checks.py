@@ -54,6 +54,15 @@ def test_csp_host_named_unsafe_inline_is_pass():
     assert csp.status == "pass"
 
 
+def test_referrer_policy_unknown_value_is_warning():
+    snapshot = SecurityHeaderSnapshot.from_header_map(
+        {"Referrer-Policy": "not-a-real-policy"}
+    )
+    findings = evaluate_security_findings(snapshot, target_scheme="https")
+    rp = next(item for item in findings if item.id == "HEADER-RP")
+    assert rp.status == "warning"
+
+
 def test_referrer_policy_uses_last_recognized_token():
     snapshot = SecurityHeaderSnapshot.from_header_map(
         {"Referrer-Policy": "unsafe-url, no-referrer"}
