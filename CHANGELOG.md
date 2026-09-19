@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## [1.2.2] - 2026-09-19
+
+### Added
+
+- Deterministic JSON Schema contract tests for completed scans: summary status and counts (`passed`, `warning`, `failed`), HTTP status codes (200, 404, 500), redirect chains (none, single hop, multi-hop), and redirect URL redaction.
+
 ## [1.2.1] - 2026-09-19
 
 ### Added

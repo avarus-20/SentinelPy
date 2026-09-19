@@ -4,7 +4,7 @@ import sentinelpy
 
 
 def test_version_matches_package_metadata():
-    assert sentinelpy.__version__ == "1.2.1"
+    assert sentinelpy.__version__ == "1.2.2"
 
 
 def test_public_api_exposes_redaction_and_schema_version():
