@@ -1,0 +1,102 @@
+{
+  "disclaimer": "Authorized, read-only assessment of HTTP response headers. This report does not guarantee that the target is secure.",
+  "elapsed_ms": 12.5,
+  "error": null,
+  "final_url": "https://example.com/",
+  "findings": [
+    {
+      "evidence": {
+        "header_name": "Strict-Transport-Security",
+        "header_value_excerpt": "max-age=31536000",
+        "observed": "present"
+      },
+      "explanation": "HSTS is present on HTTPS. Review max-age and includeSubDomains separately.",
+      "id": "HEADER-HSTS",
+      "reference": "https://datatracker.ietf.org/doc/html/rfc6797",
+      "remediation": "No change required for basic presence review.",
+      "severity": "info",
+      "status": "pass",
+      "title": "Strict-Transport-Security header is present"
+    },
+    {
+      "evidence": {
+        "header_name": "Content-Security-Policy",
+        "observed": "present"
+      },
+      "explanation": "A CSP is present. Full policy review is outside this tool's scope.",
+      "id": "HEADER-CSP",
+      "reference": "https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html",
+      "remediation": "No change required for basic presence review.",
+      "severity": "info",
+      "status": "pass",
+      "title": "Content-Security-Policy header is present"
+    },
+    {
+      "evidence": {
+        "header_name": "X-Content-Type-Options",
+        "header_value_excerpt": "nosniff",
+        "observed": "present"
+      },
+      "explanation": "The header discourages MIME-type sniffing.",
+      "id": "HEADER-XCTO",
+      "reference": "https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html",
+      "remediation": "No change required.",
+      "severity": "info",
+      "status": "pass",
+      "title": "X-Content-Type-Options is nosniff"
+    },
+    {
+      "evidence": {
+        "header_name": "X-Frame-Options",
+        "header_value_excerpt": "DENY",
+        "observed": "present"
+      },
+      "explanation": "X-Frame-Options is present. CSP frame-ancestors is not evaluated here.",
+      "id": "HEADER-XFO",
+      "reference": "https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html",
+      "remediation": "No change required for basic presence review.",
+      "severity": "info",
+      "status": "pass",
+      "title": "X-Frame-Options header is present"
+    },
+    {
+      "evidence": {
+        "header_name": "Referrer-Policy",
+        "header_value_excerpt": "no-referrer",
+        "observed": "present"
+      },
+      "explanation": "Referrer-Policy is present.",
+      "id": "HEADER-RP",
+      "reference": "https://owasp.org/www-project-secure-headers/",
+      "remediation": "No change required for basic presence review.",
+      "severity": "info",
+      "status": "pass",
+      "title": "Referrer-Policy header is present"
+    }
+  ],
+  "http_status": 200,
+  "limitations": [
+    "Follows HTTP redirects by default (additional GET per hop); use --no-redirects for one request. No crawling beyond the redirect chain.",
+    "Only five selected response headers are evaluated for presence.",
+    "Absence or presence of a header is not a complete security assessment.",
+    "Does not inspect HTML, cookies, JavaScript, or server-side logic.",
+    "Use only on systems you own or are explicitly authorized to test."
+  ],
+  "redirects": [],
+  "report_schema_version": "1.0.0",
+  "scan_status": "completed",
+  "scanned_at": "2026-09-19T12:00:00Z",
+  "summary": {
+    "counts": {
+      "error": 0,
+      "fail": 0,
+      "info": 0,
+      "pass": 5,
+      "warning": 0
+    },
+    "status": "passed"
+  },
+  "target_url": "https://example.com/",
+  "tool_name": "sentinelpy",
+  "tool_version": "1.3.0"
+}
