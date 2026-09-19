@@ -7,10 +7,13 @@
 
 | Field | Value |
 | --- | --- |
+| **Pre-closure `main` baseline** | `c9538af9788057589f740ba479028581721290f8` |
 | **Initial closure (`main`)** | `1115cd41e88ef06941bbe38f6fa45deb4a24b7ec` ([PR #37](https://github.com/avarus-20/SentinelPy/pull/37)) |
-| **Documentation consistency (`main`)** | `0c9c993a82effd9780eaaf0ee60e4015bf6e0f62` ([PR #41](https://github.com/avarus-20/SentinelPy/pull/41)) |
-| **Final `main` HEAD (closure)** | `213e1d6ec5d1e874dfb4e3574147e6aaa6ad6457` ([PR #42](https://github.com/avarus-20/SentinelPy/pull/42)) |
-| **Current stable release** | **[v1.3.0](https://github.com/avarus-20/SentinelPy/releases/tag/v1.3.0)** (wheel + sdist on GitHub Releases; matches `pyproject.toml`) |
+| **v1.3.0 documentation consistency** | `0c9c993a82effd9780eaaf0ee60e4015bf6e0f62` ([PR #41](https://github.com/avarus-20/SentinelPy/pull/41)) |
+| **Audit table updates** | `213e1d6ec5d1e874dfb4e3574147e6aaa6ad6457` ([PR #42](https://github.com/avarus-20/SentinelPy/pull/42)), `23cdf422523507b1c2bcfc9ffe7b0421473e152e` ([PR #43](https://github.com/avarus-20/SentinelPy/pull/43)) |
+| **Current stable release (tag)** | **[v1.3.0](https://github.com/avarus-20/SentinelPy/releases/tag/v1.3.0)** (wheel + sdist; matches `pyproject.toml` at tag) |
+
+**`main` branch tip:** moves with maintenance doc commits; do not treat a historical `main` SHA as the install pin. Use tag **v1.3.0** (or a later maintenance tag if published).
 
 **Note:** [PR #40](https://github.com/avarus-20/SentinelPy/pull/40) pinned docs to v1.2.1 and was superseded by the v1.3.0 consistency correction ([PR #41](https://github.com/avarus-20/SentinelPy/pull/41)). Tags v1.2.1–v1.2.2 remain for history; they are not deleted.
 
