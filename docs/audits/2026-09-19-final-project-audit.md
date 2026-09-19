@@ -8,7 +8,7 @@
 | Field | Value |
 | --- | --- |
 | **Pre-closure `main` baseline** | `c9538af9788057589f740ba479028581721290f8` |
-| **Closure documentation** | Merge commit of project finalization PR (see PR link in repository) |
+| **Closure commit (`main`)** | `1115cd41e88ef06941bbe38f6fa45deb4a24b7ec` ([PR #37](https://github.com/avarus-20/SentinelPy/pull/37)) |
 | **Declared stable release** | **[v1.2.1](https://github.com/avarus-20/SentinelPy/releases/tag/v1.2.1)** |
 
 Historical tags and releases (including v1.2.2, v1.3.0) are retained and not deleted; they do not reopen feature development.
