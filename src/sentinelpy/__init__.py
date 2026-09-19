@@ -10,7 +10,10 @@ from sentinelpy.exceptions import (
 )
 from sentinelpy.http.url import normalize_url as normalize_target_url
 from sentinelpy.models.schema import REPORT_SCHEMA_VERSION
+from sentinelpy.models.report import ScanReport
 from sentinelpy.redaction.url import redact_url
+from sentinelpy.reports.json import render_json
+from sentinelpy.scan import ScanOptions, run_scan
 
 __all__ = [
     "InvalidTargetError",
@@ -20,6 +23,10 @@ __all__ = [
     "SentinelPyError",
     "TLSError",
     "__version__",
+    "ScanOptions",
+    "ScanReport",
     "normalize_target_url",
     "redact_url",
+    "render_json",
+    "run_scan",
 ]

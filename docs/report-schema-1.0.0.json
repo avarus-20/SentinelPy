@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/avarus-20/SentinelPy/schemas/report-1.0.0.json",
+  "title": "SentinelPy Scan Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "report_schema_version",
+    "tool_name",
+    "tool_version",
+    "scanned_at",
+    "target_url",
+    "scan_status",
+    "final_url",
+    "http_status",
+    "redirects",
+    "elapsed_ms",
+    "findings",
+    "summary",
+    "limitations",
+    "disclaimer",
+    "error"
+  ],
+  "properties": {
+    "report_schema_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "tool_name": { "const": "sentinelpy" },
+    "tool_version": { "type": "string" },
+    "scanned_at": { "type": "string", "format": "date-time" },
+    "target_url": { "type": ["string", "null"] },
+    "scan_status": { "enum": ["completed", "error"] },
+    "final_url": { "type": ["string", "null"] },
+    "http_status": { "type": ["integer", "null"], "minimum": 0, "maximum": 599 },
+    "redirects": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/redirect_hop" }
+    },
+    "elapsed_ms": { "type": "number", "minimum": 0 },
+    "findings": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/finding" }
+    },
+    "summary": { "$ref": "#/$defs/summary" },
+    "limitations": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "disclaimer": { "type": "string" },
+    "error": {
+      "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/error" }]
+    }
+  },
+  "$defs": {
+    "redirect_hop": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["from_url", "to_url", "status"],
+      "properties": {
+        "from_url": { "type": "string" },
+        "to_url": { "type": "string" },
+        "status": { "type": "integer" }
+      }
+    },
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "severity",
+        "status",
+        "evidence",
+        "explanation",
+        "remediation",
+        "reference"
+      ],
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "severity": { "enum": ["info", "low", "medium", "high"] },
+        "status": { "enum": ["pass", "warning", "fail", "error"] },
+        "evidence": { "type": "object" },
+        "explanation": { "type": "string" },
+        "remediation": { "type": "string" },
+        "reference": { "type": "string", "format": "uri" }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "counts"],
+      "properties": {
+        "status": { "enum": ["passed", "warning", "failed", "error"] },
+        "counts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["pass", "warning", "fail", "error", "info"],
+          "properties": {
+            "pass": { "type": "integer", "minimum": 0 },
+            "warning": { "type": "integer", "minimum": 0 },
+            "fail": { "type": "integer", "minimum": 0 },
+            "error": { "type": "integer", "minimum": 0 },
+            "info": { "type": "integer", "minimum": 0 }
+          }
+        }
+      }
+    },
+    "error": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["category", "message"],
+      "properties": {
+        "category": {
+          "enum": [
+            "invalid_target",
+            "timeout",
+            "connection",
+            "tls",
+            "internal"
+          ]
+        },
+        "message": { "type": "string" }
+      }
+    }
+  }
+}

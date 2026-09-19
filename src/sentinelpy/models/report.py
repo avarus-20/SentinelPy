@@ -79,9 +79,7 @@ class ScanReport:
     """
     Structured scan report.
 
-    Public reports must never include raw response header maps. This type is
-    constructed manually in tests during v0.2.0a; orchestration arrives in
-    v0.2.0b.
+    Public reports must never include raw response header maps.
     """
 
     report_schema_version: str
