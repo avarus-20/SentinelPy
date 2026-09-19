@@ -123,6 +123,6 @@ assert rp.status == "pass"  # current (incorrect) behavior
 | P2 E2E CSP JSON safety test | fixed in PR | post-audit PR → v1.0.2 |
 | P2 Markdown smoke test | fixed in PR | post-audit PR → v1.0.2 |
 | P2 CONTRIBUTING dev install alignment | fixed in PR | post-audit PR → v1.0.2 |
-| P2 Remove dead `presence.py` | open | v1.1 |
-| P2 JSON Schema validation test | open | v1.1 |
-| P2 Pin Actions to SHA digests | open | v1.1 |
+| P2 Remove dead `presence.py` | done | v1.1.0 |
+| P2 JSON Schema validation test | done | v1.1.0 |
+| P2 Pin Actions to SHA digests | done | v1.1.0 |
