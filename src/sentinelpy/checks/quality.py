@@ -13,6 +13,22 @@ _OWASP_CHEATSHEET = (
     "https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html"
 )
 _RFC6797 = "https://datatracker.ietf.org/doc/html/rfc6797"
+_HSTS_MAX_AGE = re.compile(r"^max-age\s*=\s*(\d+)\s*$", re.IGNORECASE)
+_SUPPORTED_XFO = frozenset({"deny", "sameorigin"})
+_CSP_UNSAFE_KEYWORDS = frozenset({"unsafe-inline", "unsafe-eval"})
+_KNOWN_REFERRER_POLICIES = (
+    "no-referrer",
+    "no-referrer-when-downgrade",
+    "origin",
+    "origin-when-cross-origin",
+    "same-origin",
+    "strict-origin",
+    "strict-origin-when-cross-origin",
+    "unsafe-url",
+)
+_PERMISSIVE_REFERRER_POLICIES = frozenset(
+    {"unsafe-url", "no-referrer-when-downgrade"}
+)
 
 
 def evaluate_security_findings(
@@ -85,8 +101,26 @@ def _hsts_finding(snapshot: SecurityHeaderSnapshot, target_scheme: str) -> Findi
             reference=_RFC6797,
         )
 
-    lowered = value.lower()
-    if "max-age=0" in lowered.replace(" ", ""):
+    max_age = _hsts_max_age_seconds(value)
+    if max_age is None:
+        return Finding(
+            id="HEADER-HSTS",
+            title="Strict-Transport-Security is not valid",
+            severity="medium",
+            status="warning",
+            evidence=EvidenceBuilder.for_presence(
+                "Strict-Transport-Security",
+                present=True,
+                raw_value=value,
+            ).to_dict(),
+            explanation=(
+                "Browsers require a valid max-age directive; "
+                "directives such as includeSubDomains alone are ignored."
+            ),
+            remediation="Send Strict-Transport-Security with a positive max-age value.",
+            reference=_RFC6797,
+        )
+    if max_age == 0:
         return Finding(
             id="HEADER-HSTS",
             title="Strict-Transport-Security disables HSTS (max-age=0)",
@@ -136,8 +170,7 @@ def _csp_finding(snapshot: SecurityHeaderSnapshot) -> Finding:
             reference=_OWASP_CHEATSHEET,
         )
 
-    lowered = value.lower()
-    if "unsafe-inline" in lowered or "unsafe-eval" in lowered:
+    if _csp_allows_unsafe_keywords(value):
         return Finding(
             id="HEADER-CSP",
             title="Content-Security-Policy allows unsafe directives",
@@ -255,6 +288,22 @@ def _xfo_finding(snapshot: SecurityHeaderSnapshot) -> Finding:
             remediation="Prefer CSP frame-ancestors or DENY/SAMEORIGIN.",
             reference=_OWASP_CHEATSHEET,
         )
+    primary = value.split(",")[0].strip().lower()
+    if primary not in _SUPPORTED_XFO:
+        return Finding(
+            id="HEADER-XFO",
+            title="X-Frame-Options value is not supported",
+            severity="low",
+            status="warning",
+            evidence=EvidenceBuilder.for_presence(
+                "X-Frame-Options",
+                present=True,
+                raw_value=value,
+            ).to_dict(),
+            explanation="Browsers enforce only DENY or SAMEORIGIN for this header.",
+            remediation="Set X-Frame-Options to DENY or SAMEORIGIN.",
+            reference=_OWASP_CHEATSHEET,
+        )
     return Finding(
         id="HEADER-XFO",
         title="X-Frame-Options header is present",
@@ -288,8 +337,8 @@ def _referrer_policy_finding(snapshot: SecurityHeaderSnapshot) -> Finding:
             remediation="Set an explicit Referrer-Policy suited to your privacy needs.",
             reference=_OWASP_CHEATSHEET,
         )
-    lowered = value.lower()
-    if "unsafe-url" in lowered or "no-referrer-when-downgrade" in lowered:
+    effective = _effective_referrer_policy(value)
+    if effective in _PERMISSIVE_REFERRER_POLICIES:
         return Finding(
             id="HEADER-RP",
             title="Referrer-Policy uses a permissive value",
@@ -318,3 +367,32 @@ def _referrer_policy_finding(snapshot: SecurityHeaderSnapshot) -> Finding:
         remediation="No change required for basic presence review.",
         reference=_OSWASP,
     )
+
+
+def _hsts_max_age_seconds(value: str) -> int | None:
+    for part in value.split(";"):
+        match = _HSTS_MAX_AGE.match(part.strip())
+        if match is not None:
+            return int(match.group(1))
+    return None
+
+
+def _csp_allows_unsafe_keywords(value: str) -> bool:
+    for directive in value.split(";"):
+        tokens = directive.strip().split()
+        if len(tokens) < 2:
+            continue
+        for source in tokens[1:]:
+            normalized = source.strip().strip("'\"")
+            if normalized.lower() in _CSP_UNSAFE_KEYWORDS:
+                return True
+    return False
+
+
+def _effective_referrer_policy(value: str) -> str | None:
+    effective: str | None = None
+    for token in value.split(","):
+        candidate = token.strip().lower()
+        if candidate in _KNOWN_REFERRER_POLICIES:
+            effective = candidate
+    return effective

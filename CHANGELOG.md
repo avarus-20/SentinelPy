@@ -10,6 +10,7 @@ All notable changes to this project are documented here.
 - Evaluate HSTS using the final response URL scheme after redirects.
 - Return structured invalid-target error reports for malformed URLs.
 - CLI: map `--output` write failures to exit code 3; omit ANSI colors when writing terminal format to a file.
+- Quality checks: validate HSTS max-age, X-Frame-Options tokens, CSP unsafe keywords by source token, and effective Referrer-Policy.
 
 ## [1.0.0] - 2026-09-19
 
