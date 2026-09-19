@@ -7,7 +7,7 @@ import sentinelpy
 
 
 def test_version_matches_package_metadata():
-    assert sentinelpy.__version__ == "0.1.0"
+    assert sentinelpy.__version__ == "0.2.0"
 
 
 def test_public_api_exposes_redaction_and_schema_version():
@@ -16,9 +16,8 @@ def test_public_api_exposes_redaction_and_schema_version():
     assert "REDACTED" in sentinelpy.redact_url("https://example.com/?token=secret")
 
 
-def test_run_scan_is_not_public():
-    with pytest.raises(AttributeError):
-        getattr(sentinelpy, "run_scan")
+def test_run_scan_is_public():
+    assert callable(sentinelpy.run_scan)
 
 
 def test_main_legacy_imports_remain_available():
@@ -33,5 +32,5 @@ def test_main_legacy_imports_remain_available():
         assert hasattr(module, name)
 
 
-def test_package_all_excludes_run_scan():
-    assert "run_scan" not in sentinelpy.__all__
+def test_package_all_includes_run_scan():
+    assert "run_scan" in sentinelpy.__all__
