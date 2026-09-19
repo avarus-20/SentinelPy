@@ -10,6 +10,10 @@ All notable changes to this project are documented here.
 
 ### Fixed
 
+- Stabilize JSON `--no-color` CLI test by fixing `scanned_at` during comparison (Codex PR #29).
+
+### Fixed
+
 - Release workflow clears `dist/` before `python -m build` so stale wheels are never uploaded.
 
 ## [1.2.0] - 2026-09-19
