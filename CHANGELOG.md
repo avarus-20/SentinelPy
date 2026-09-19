@@ -12,6 +12,7 @@ All notable changes to this project are documented here.
 - CLI: map `--output` write failures to exit code 3; omit ANSI colors when writing terminal format to a file.
 - Quality checks: validate HSTS max-age, X-Frame-Options tokens, CSP unsafe keywords by source token, and effective Referrer-Policy.
 - Docs: define `dev` optional extra for `pip install -e ".[dev]"`; clarify redirect follow behavior vs a single GET.
+- Build: require setuptools 77+ so SPDX `license = "MIT"` metadata parses on isolated builds.
 
 ## [1.0.0] - 2026-09-19
 
