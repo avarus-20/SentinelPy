@@ -8,7 +8,7 @@ SentinelPy is designed for **authorized**, **read-only** checks of **one URL** p
 | --- | --- | --- |
 | `0` | Scan **completed**; summary is `passed` or `warning` | Job step succeeds; parse JSON if you gate on `summary.status`. |
 | `1` | Scan **completed**; summary is `failed` (header findings) | Fail the job if missing headers must block deploy; otherwise upload report and fail only when `summary.status == failed`. |
-| `2` | Usage error or **invalid target URL** (`error.category == invalid_target`) | Fail fast — fix workflow inputs. With `--output`, the CLI still writes a structured error report before exiting `2`. |
+| `2` | **Usage** (bad flags, e.g. `--timeout 0`) or **invalid target** (`error.category == invalid_target`) | Fail fast — fix workflow inputs. Only **invalid target** runs produce a structured JSON/Markdown report (and with `--output`, that file is written before exit `2`). Other usage failures exit before any report is emitted. |
 | `3` | Scan **error** (timeout, connection, TLS, internal) | Fail the job; inspect `error.category` and `error.message` in JSON (no stack traces). |
 
 **Important:** Exit code `0` includes **`warning`** outcomes (for example HTTP without HSTS). If your policy treats warnings like failures, check `summary.status` in `report.json` instead of relying on `$?` alone.
@@ -61,7 +61,7 @@ Neither artifact includes raw response header maps or cookies.
   run: exit 1
 ```
 
-With `set +e`, the scan step exits **0** whenever `report.json` exists—even when SentinelPy returned **2** or **3**. Capture `exit_code` in outputs and add the step above (same pattern as the full [example workflow](../examples/github-actions-sentinelpy.yml)).
+With `set +e`, the scan step exits **0** whenever `report.json` exists—even when SentinelPy returned **2** (invalid target) or **3**. Capture `exit_code` in outputs and add the step above (same pattern as the full [example workflow](../examples/github-actions-sentinelpy.yml)). Pre-scan usage errors (exit **2** without a report) fail the step at `test -f report.json`, which is usually what you want.
 
 Adjust the enforce step to match your risk tolerance (fail on `warning`, fail only on specific finding IDs, etc.).
 
