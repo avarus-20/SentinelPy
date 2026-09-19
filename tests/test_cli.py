@@ -113,6 +113,43 @@ def test_cli_scan_error_exit_three():
     assert code == EXIT_SCAN_ERROR
 
 
+def test_cli_scan_output_write_failure_returns_scan_error(tmp_path):
+    missing = tmp_path / "missing" / "report.txt"
+    with patch(
+        "sentinelpy.cli.scan_cmd.run_scan",
+        return_value=_completed_report(failed=False),
+    ):
+        code = _run_cli(
+            "scan",
+            "https://example.com",
+            "--output",
+            str(missing),
+        )
+
+    assert code == EXIT_SCAN_ERROR
+
+
+def test_cli_terminal_output_file_has_no_ansi(tmp_path):
+    output_file = tmp_path / "report.txt"
+    with (
+        patch(
+            "sentinelpy.cli.scan_cmd.run_scan",
+            return_value=_completed_report(failed=False),
+        ),
+        patch("sys.stdout.isatty", return_value=True),
+    ):
+        code = _run_cli(
+            "scan",
+            "https://example.com",
+            "--output",
+            str(output_file),
+        )
+
+    assert code == EXIT_OK
+    text = output_file.read_text(encoding="utf-8")
+    assert "\x1b[" not in text
+
+
 def test_module_entrypoint_lists_scan_command():
     result = subprocess.run(
         [sys.executable, "-m", "sentinelpy"],

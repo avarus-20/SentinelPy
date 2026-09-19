@@ -9,6 +9,7 @@ All notable changes to this project are documented here.
 - Never embed Content-Security-Policy body text in public finding evidence.
 - Evaluate HSTS using the final response URL scheme after redirects.
 - Return structured invalid-target error reports for malformed URLs.
+- CLI: map `--output` write failures to exit code 3; omit ANSI colors when writing terminal format to a file.
 
 ## [1.0.0] - 2026-09-19
 
