@@ -184,12 +184,12 @@ def test_github_actions_example_documents_artifacts_and_exit_codes() -> None:
     assert "--format markdown" in content
     assert "upload-artifact" in content
     assert "exit code" in content.lower()
-    assert "v1.2.1" in content
+    assert "v1.3.0" in content
 
 
-def test_readme_quick_start_pins_stable_v1_2_1() -> None:
+def test_readme_quick_start_pins_stable_v1_3_0() -> None:
     readme = _README.read_text(encoding="utf-8")
-    assert "git checkout v1.2.1" in readme or "@v1.2.1" in readme
+    assert "git checkout v1.3.0" in readme or "@v1.3.0" in readme
 
 
 def test_ci_doc_links_schema_and_golden_fixtures() -> None:

@@ -4,7 +4,7 @@ SentinelPy is a **local**, **authorized**, **read-only** CLI that checks selecte
 
 ## Project status
 
-The project is **feature-complete** at **[v1.2.1](https://github.com/avarus-20/SentinelPy/releases/tag/v1.2.1)** and in **maintenance-only** mode (security, correctness, packaging, and compatibility fixes). See [PROJECT_STATUS.md](PROJECT_STATUS.md).
+The project is **feature-complete** and in **maintenance-only** mode. Current stable release: **[v1.3.0](https://github.com/avarus-20/SentinelPy/releases/tag/v1.3.0)**. See [PROJECT_STATUS.md](PROJECT_STATUS.md).
 
 It is **not** a penetration-testing tool and **does not guarantee** that a website is secure. It performs a limited configuration review of a single HTTP response.
 
@@ -18,12 +18,12 @@ It is **not** a penetration-testing tool and **does not guarantee** that a websi
 
 ## Quick start
 
-Install the **stable** release (**v1.2.1**), not floating `main` (which may carry newer metadata only):
+Install the **stable** release (**v1.3.0**):
 
 ```bash
 git clone https://github.com/avarus-20/SentinelPy.git
 cd SentinelPy
-git checkout v1.2.1
+git checkout v1.3.0
 python3.11 -m venv .venv
 source .venv/bin/activate
 python -m pip install -U pip
@@ -31,7 +31,9 @@ pip install -e .
 sentinelpy scan https://example.com
 ```
 
-Alternative without a clone: `pip install "git+https://github.com/avarus-20/SentinelPy@v1.2.1"` or install the wheel from [Releases](https://github.com/avarus-20/SentinelPy/releases/tag/v1.2.1).
+Alternative without a clone: `pip install "git+https://github.com/avarus-20/SentinelPy@v1.3.0"` or install the wheel from [Releases](https://github.com/avarus-20/SentinelPy/releases/tag/v1.3.0).
+
+Maintenance contributors may work on `main`; end users should pin **v1.3.0** (or a newer maintenance tag if one is published).
 
 JSON for CI:
 
