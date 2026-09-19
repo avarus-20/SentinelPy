@@ -2,11 +2,19 @@
 
 All notable changes to this project are documented here.
 
-## [1.0.0] - Unreleased
+## [1.0.0] - 2026-09-19
 
 ### Added
 
-- Production-ready CLI, JSON/Markdown/terminal reports, quality checks, CI, and documentation.
+- Stable CLI (`sentinelpy scan`) with terminal, JSON, and Markdown reports.
+- Safe `run_scan()` pipeline with redaction and documented JSON schema `1.0.0`.
+- Conservative quality checks for five security headers and HTTP HSTS advisories.
+- Engineering quality gates: Ruff, mypy, coverage, CI on Python 3.11/3.12.
+
+### Notes
+
+- Legacy `sentinelpy.main` imports remain for compatibility but may expose raw headers.
+- This tool does not guarantee website security; authorized read-only use only.
 
 ## [0.5.0] - 2026-09-19
 

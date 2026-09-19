@@ -4,11 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sentinelpy"
-version = "0.5.0"
+version = "1.0.0"
 description = "Authorized, read-only HTTP security header checks for one URL."
 readme = "README.md"
 requires-python = ">=3.11"
-license = { text = "MIT" }
+license = "MIT"
+license-files = ["LICENSE"]
 
 [project.scripts]
 sentinelpy = "sentinelpy.cli.app:main"
