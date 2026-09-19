@@ -5,9 +5,9 @@
 
 ## Current stable release
 
-**[v1.2.1](https://github.com/avarus-20/SentinelPy/releases/tag/v1.2.1)** is the feature-complete stable release for this project.
+**[v1.3.0](https://github.com/avarus-20/SentinelPy/releases/tag/v1.3.0)** is the current stable release. It matches `pyproject.toml` / `CHANGELOG.md` on `main` and ships GitHub Release wheel and sdist assets.
 
-Later tags (for example v1.2.2, v1.3.0) remain available for historical reference; they do not expand product scope. New feature development is **not** planned.
+Scan behavior and the public JSON report contract (`report_schema_version` **1.0.0**) are unchanged since **v1.2.1**; v1.2.2 and v1.3.0 added contract tests, CI documentation, and golden fixtures only. Earlier tags remain available and are not deleted.
 
 ## Purpose
 
@@ -15,7 +15,7 @@ SentinelPy is a **local**, **authorized**, **read-only** tool that checks select
 
 Use it only on systems you own or are explicitly permitted to test. It is **not** a penetration-testing product and does **not** guarantee that a target is secure.
 
-## Supported capabilities (v1.2.1 scope)
+## Supported capabilities
 
 - CLI: `sentinelpy scan TARGET_URL` with `--format terminal|json|markdown`, `--output`, `--timeout`, `--user-agent`, `--no-redirects`, `--no-color`
 - Python API: `run_scan`, `ScanOptions`, `render_json`, `ScanReport`, `redact_url`, `normalize_target_url`, `__version__`, `REPORT_SCHEMA_VERSION`
@@ -23,6 +23,7 @@ Use it only on systems you own or are explicitly permitted to test. It is **not*
 - JSON report schema version **1.0.0** ([schema](docs/report-schema-1.0.0.json))
 - CLI exit codes **0** (passed/warning completed), **1** (failed findings), **2** (usage/invalid target), **3** (scan error)
 - Safe reports: no raw response header maps; URL userinfo/query redaction; redirect hops recorded with redacted URLs
+- CI trust pack (docs + examples + golden JSON fixtures) as of v1.3.0 — see [docs/ci-github-actions.md](docs/ci-github-actions.md)
 
 ## Non-goals
 
@@ -39,8 +40,9 @@ The project is **closed to feature development**. Acceptable changes are limited
 - Confirmed **security** issues
 - **Correctness** bugs in scan, reporting, or redaction
 - **Packaging** or **compatibility** fixes (Python versions, dependencies, CI)
+- **Documentation** corrections that keep install/version guidance aligned with the stable release
 
-Each maintenance change should include tests when behavior is affected and a entry in [CHANGELOG.md](CHANGELOG.md). Do not bump version or cut a GitHub Release unless a confirmed defect requires it.
+Each maintenance change should include tests when behavior is affected and an entry in [CHANGELOG.md](CHANGELOG.md). Do not bump version or cut a GitHub Release unless a confirmed defect requires it.
 
 ## References
 

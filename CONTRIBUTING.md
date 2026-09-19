@@ -2,7 +2,7 @@
 
 Thank you for helping improve SentinelPy. This project is a defensive, read-only HTTP header checker.
 
-The project is **feature-complete** (stable release **v1.2.1**) and accepts **maintenance** contributions only — see [PROJECT_STATUS.md](PROJECT_STATUS.md).
+The project is **feature-complete** (stable release **v1.3.0**) and accepts **maintenance** contributions only — see [PROJECT_STATUS.md](PROJECT_STATUS.md).
 
 ## Ground rules
 

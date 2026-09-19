@@ -70,7 +70,7 @@ Adjust the enforce step to match your risk tolerance (fail on `warning`, fail on
 This project does not publish to PyPI. Pin a **tag** or **commit SHA** and install from GitHub:
 
 ```bash
-pip install "git+https://github.com/avarus-20/SentinelPy@v1.2.1"
+pip install "git+https://github.com/avarus-20/SentinelPy@v1.3.0"
 ```
 
 For reproducible builds, vendor the wheel from GitHub Releases or build from a pinned SHA in a prior workflow step.
