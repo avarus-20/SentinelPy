@@ -7,10 +7,11 @@ import sys
 from sentinelpy.models.report import ScanReport
 
 
-def render_terminal(report: ScanReport) -> str:
+def render_terminal(report: ScanReport, *, use_color: bool | None = None) -> str:
     """Render a concise human-readable report."""
 
-    use_color = sys.stdout.isatty()
+    if use_color is None:
+        use_color = sys.stdout.isatty()
     lines = [
         _style("SentinelPy scan report", "bold", use_color),
         f"Target: {report.target_url}",

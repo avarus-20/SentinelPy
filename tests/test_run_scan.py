@@ -17,9 +17,11 @@ def _response(
     target: str = "https://example.com/",
     final: str = "https://example.com/",
 ) -> HttpResponse:
+    final_scheme = "http" if final.lower().startswith("http://") else "https"
     return HttpResponse(
         target_url=target,
         final_url=final,
+        final_scheme=final_scheme,
         status=status,
         headers=headers or {},
         redirects=(),
@@ -122,6 +124,7 @@ def test_run_scan_records_redirects():
     response = HttpResponse(
         target_url="https://example.com/",
         final_url="https://example.com/final",
+        final_scheme="https",
         status=200,
         headers={},
         redirects=(

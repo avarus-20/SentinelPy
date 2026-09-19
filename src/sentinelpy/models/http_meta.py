@@ -33,6 +33,7 @@ class HttpResponse:
 
     target_url: str
     final_url: str
+    final_scheme: str
     status: int
     headers: dict[str, str]
     redirects: tuple[RedirectHop, ...]

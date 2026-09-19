@@ -15,7 +15,7 @@ from urllib.request import HTTPRedirectHandler, Request, build_opener
 
 from sentinelpy._version import __version__
 from sentinelpy.exceptions import NetworkError, RequestTimeoutError, TLSError
-from sentinelpy.http.url import normalize_url
+from sentinelpy.http.url import normalize_url, target_scheme
 from sentinelpy.models.http_meta import HttpResponse, RedirectHop
 from sentinelpy.redaction.url import redact_url
 
@@ -97,9 +97,11 @@ def fetch(target: str, *, options: FetchOptions | None = None) -> HttpResponse:
     try:
         with opener.open(request, timeout=opts.timeout) as response:
             elapsed_ms = (time.perf_counter() - started) * 1000
+            raw_final_url = response.geturl()
             return HttpResponse(
                 target_url=redact_url(normalized),
-                final_url=redact_url(response.geturl()),
+                final_url=redact_url(raw_final_url),
+                final_scheme=target_scheme(raw_final_url),
                 status=response.status,
                 headers=dict(response.headers.items()),
                 redirects=tuple(redirect_handler.hops),
@@ -108,9 +110,11 @@ def fetch(target: str, *, options: FetchOptions | None = None) -> HttpResponse:
 
     except HTTPError as error:
         elapsed_ms = (time.perf_counter() - started) * 1000
+        raw_final_url = error.geturl()
         return HttpResponse(
             target_url=redact_url(normalized),
-            final_url=redact_url(error.geturl()),
+            final_url=redact_url(raw_final_url),
+            final_scheme=target_scheme(raw_final_url),
             status=error.code,
             headers=dict(error.headers.items()),
             redirects=tuple(redirect_handler.hops),

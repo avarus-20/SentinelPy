@@ -29,11 +29,10 @@ _SENSITIVE_EXACT = frozenset(
     }
 )
 
+# CSP values may embed report URIs, nonces, or tokens; never copy them into reports.
 _EVIDENCE_ALLOWLIST = frozenset(
     {
         "strict-transport-security",
-        "content-security-policy",
-        "content-security-policy-report-only",
         "x-content-type-options",
         "x-frame-options",
         "referrer-policy",

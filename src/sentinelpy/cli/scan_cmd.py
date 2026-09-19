@@ -82,8 +82,10 @@ def run_scan_command(args: argparse.Namespace) -> int:
         _stderr("Error: An internal error occurred.")
         return EXIT_SCAN_ERROR
 
-    content = _render(report, args.format)
-    _emit(content, args.output)
+    use_color = args.output is None and sys.stdout.isatty()
+    content = _render(report, args.format, use_color=use_color)
+    if not _emit(content, args.output):
+        return EXIT_SCAN_ERROR
 
     if report.scan_status == "error":
         if report.error is not None:
@@ -96,24 +98,30 @@ def run_scan_command(args: argparse.Namespace) -> int:
     return EXIT_OK
 
 
-def _render(report: ScanReport, fmt: str) -> str:
+def _render(report: ScanReport, fmt: str, *, use_color: bool) -> str:
     if fmt == "json":
         return render_json(report)
     if fmt == "markdown":
         return render_markdown(report)
-    return render_terminal(report)
+    return render_terminal(report, use_color=use_color)
 
 
-def _emit(content: str, output_path: str | None) -> None:
-    if output_path:
-        with open(output_path, "w", encoding="utf-8") as handle:
-            handle.write(content)
-            if not content.endswith("\n"):
-                handle.write("\n")
-        return
-    sys.stdout.write(content)
-    if not content.endswith("\n"):
-        sys.stdout.write("\n")
+def _emit(content: str, output_path: str | None) -> bool:
+    try:
+        if output_path:
+            with open(output_path, "w", encoding="utf-8") as handle:
+                handle.write(content)
+                if not content.endswith("\n"):
+                    handle.write("\n")
+            return True
+        sys.stdout.write(content)
+        if not content.endswith("\n"):
+            sys.stdout.write("\n")
+        return True
+    except OSError as error:
+        reason = error.strerror or str(error)
+        _stderr(f"Error: Could not write report output ({reason}).")
+        return False
 
 
 def _stderr(message: str) -> None:

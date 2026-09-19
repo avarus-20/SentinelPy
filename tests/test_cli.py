@@ -60,7 +60,7 @@ def test_cli_invalid_target_exit_usage():
     report = ScanReport(
         report_schema_version=REPORT_SCHEMA_VERSION,
         tool_name="sentinelpy",
-        tool_version="1.0.0",
+        tool_version="1.0.1",
         scanned_at="2026-09-19T08:00:00Z",
         target_url=None,
         scan_status="error",
@@ -93,7 +93,7 @@ def test_cli_scan_error_exit_three():
     report = ScanReport(
         report_schema_version=REPORT_SCHEMA_VERSION,
         tool_name="sentinelpy",
-        tool_version="1.0.0",
+        tool_version="1.0.1",
         scanned_at="2026-09-19T08:00:00Z",
         target_url="https://example.com/",
         scan_status="error",
@@ -111,6 +111,43 @@ def test_cli_scan_error_exit_three():
         code = _run_cli("scan", "https://example.com")
 
     assert code == EXIT_SCAN_ERROR
+
+
+def test_cli_scan_output_write_failure_returns_scan_error(tmp_path):
+    missing = tmp_path / "missing" / "report.txt"
+    with patch(
+        "sentinelpy.cli.scan_cmd.run_scan",
+        return_value=_completed_report(failed=False),
+    ):
+        code = _run_cli(
+            "scan",
+            "https://example.com",
+            "--output",
+            str(missing),
+        )
+
+    assert code == EXIT_SCAN_ERROR
+
+
+def test_cli_terminal_output_file_has_no_ansi(tmp_path):
+    output_file = tmp_path / "report.txt"
+    with (
+        patch(
+            "sentinelpy.cli.scan_cmd.run_scan",
+            return_value=_completed_report(failed=False),
+        ),
+        patch("sys.stdout.isatty", return_value=True),
+    ):
+        code = _run_cli(
+            "scan",
+            "https://example.com",
+            "--output",
+            str(output_file),
+        )
+
+    assert code == EXIT_OK
+    text = output_file.read_text(encoding="utf-8")
+    assert "\x1b[" not in text
 
 
 def test_module_entrypoint_lists_scan_command():
@@ -138,7 +175,7 @@ def _completed_report(*, failed: bool):
     return ScanReport(
         report_schema_version=REPORT_SCHEMA_VERSION,
         tool_name="sentinelpy",
-        tool_version="1.0.0",
+        tool_version="1.0.1",
         scanned_at="2026-09-19T08:00:00Z",
         target_url="https://example.com/",
         scan_status="completed",

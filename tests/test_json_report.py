@@ -35,6 +35,7 @@ def _minimal_response():
     return HttpResponse(
         target_url="https://example.com/",
         final_url="https://example.com/",
+        final_scheme="https",
         status=200,
         headers={},
         redirects=(),
