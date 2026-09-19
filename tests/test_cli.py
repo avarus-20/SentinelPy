@@ -60,7 +60,7 @@ def test_cli_invalid_target_exit_usage():
     report = ScanReport(
         report_schema_version=REPORT_SCHEMA_VERSION,
         tool_name="sentinelpy",
-        tool_version="1.1.1",
+        tool_version="1.2.0",
         scanned_at="2026-09-19T08:00:00Z",
         target_url=None,
         scan_status="error",
@@ -93,7 +93,7 @@ def test_cli_scan_error_exit_three():
     report = ScanReport(
         report_schema_version=REPORT_SCHEMA_VERSION,
         tool_name="sentinelpy",
-        tool_version="1.1.1",
+        tool_version="1.2.0",
         scanned_at="2026-09-19T08:00:00Z",
         target_url="https://example.com/",
         scan_status="error",
@@ -127,6 +127,34 @@ def test_cli_scan_output_write_failure_returns_scan_error(tmp_path):
         )
 
     assert code == EXIT_SCAN_ERROR
+
+
+def test_cli_terminal_no_color_disables_ansi_on_tty(capsys):
+    with (
+        patch(
+            "sentinelpy.cli.scan_cmd.run_scan",
+            return_value=_completed_report(failed=False),
+        ),
+        patch("sys.stdout.isatty", return_value=True),
+    ):
+        code = _run_cli("scan", "https://example.com", "--no-color")
+
+    assert code == EXIT_OK
+    assert "\x1b[" not in capsys.readouterr().out
+
+
+def test_cli_terminal_tty_uses_color_without_no_color(capsys):
+    with (
+        patch(
+            "sentinelpy.cli.scan_cmd.run_scan",
+            return_value=_completed_report(failed=False),
+        ),
+        patch("sys.stdout.isatty", return_value=True),
+    ):
+        code = _run_cli("scan", "https://example.com")
+
+    assert code == EXIT_OK
+    assert "\x1b[" in capsys.readouterr().out
 
 
 def test_cli_terminal_output_file_has_no_ansi(tmp_path):
@@ -175,7 +203,7 @@ def _completed_report(*, failed: bool):
     return ScanReport(
         report_schema_version=REPORT_SCHEMA_VERSION,
         tool_name="sentinelpy",
-        tool_version="1.1.1",
+        tool_version="1.2.0",
         scanned_at="2026-09-19T08:00:00Z",
         target_url="https://example.com/",
         scan_status="completed",

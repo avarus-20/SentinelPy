@@ -36,6 +36,7 @@ echo $?
 ```text
 sentinelpy scan TARGET_URL [--format terminal|json|markdown] [--output PATH]
                          [--timeout SECONDS] [--user-agent STRING] [--no-redirects]
+                         [--no-color]
 sentinelpy --version
 sentinelpy --help
 ```
