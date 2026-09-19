@@ -57,7 +57,7 @@ def test_fetch_headers_returns_response_headers():
     fake_context.__exit__.return_value = False
 
     # Patch urlopen to avoid a real network request.
-    with patch("sentinelpy.main.urlopen", return_value=fake_context):
+    with patch("sentinelpy.legacy.main.urlopen", return_value=fake_context):
         result = fetch_headers("example.com")
 
     assert result["Content-Type"] == "text/html"
@@ -75,7 +75,7 @@ def test_fetch_headers_returns_headers_from_http_error():
     )
 
     # Patch urlopen so that it raises the simulated HTTPError.
-    with patch("sentinelpy.main.urlopen", side_effect=error):
+    with patch("sentinelpy.legacy.main.urlopen", side_effect=error):
         result = fetch_headers("example.com")
 
     assert result["Content-Security-Policy"] == "default-src 'self'"
@@ -87,7 +87,7 @@ def test_scan_site_returns_structured_result():
         "X-Content-Type-Options": "nosniff",
     }
 
-    with patch("sentinelpy.main.fetch_headers", return_value=fake_headers):
+    with patch("sentinelpy.legacy.main.fetch_headers", return_value=fake_headers):
         result = scan_site("example.com")
 
     assert result["url"] == "https://example.com"
@@ -99,7 +99,7 @@ def test_fetch_headers_raises_connection_error_on_url_error():
     # Simulate a low-level network failure.
     error = URLError("Name or service not known")
 
-    with patch("sentinelpy.main.urlopen", side_effect=error):
+    with patch("sentinelpy.legacy.main.urlopen", side_effect=error):
         try:
             fetch_headers("example.com")
             assert False, "Expected ConnectionError"
@@ -110,7 +110,7 @@ def test_fetch_headers_raises_timeout_error_on_timeout():
     # Simulate a request timeout without waiting for a real network delay.
     error = URLError(TimeoutError("timed out"))
 
-    with patch("sentinelpy.main.urlopen", side_effect=error):
+    with patch("sentinelpy.legacy.main.urlopen", side_effect=error):
         try:
             fetch_headers("example.com")
             assert False, "Expected TimeoutError"
@@ -123,7 +123,7 @@ def test_fetch_headers_raises_timeout_error_on_direct_timeout():
     # RU: Имитируем таймаут, который urlopen() выбрасывает напрямую.
     error = TimeoutError("timed out")
 
-    with patch("sentinelpy.main.urlopen", side_effect=error):
+    with patch("sentinelpy.legacy.main.urlopen", side_effect=error):
         try:
             fetch_headers("example.com")
             assert False, "Expected TimeoutError"

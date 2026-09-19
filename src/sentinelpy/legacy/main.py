@@ -2,41 +2,31 @@
 # -*- coding: utf-8 -*-
 
 """
-SentinelPy core website security utilities.
+Legacy SentinelPy API (v0.1 compatibility).
+
+Deprecated scan helpers may expose raw response headers. Do not publish or log
+that output. Prefer the scan CLI added in v0.2.0b once available.
 """
 
 from urllib.error import HTTPError, URLError
-from urllib.parse import urlparse
 from urllib.request import Request, urlopen
+
+from sentinelpy.constants import SECURITY_HEADERS
+from sentinelpy.exceptions import InvalidTargetError
+from sentinelpy.http.url import normalize_url as _normalize_url
 
 
 def normalize_url(url: str) -> str:
     """
     Normalize a user-provided URL.
+
+    Raises ValueError with the legacy ``Invalid URL`` message when invalid.
     """
 
-    url = url.strip()
-
-    # Use HTTPS by default when no scheme is provided.
-    if not url.startswith(("http://", "https://")):
-        url = f"https://{url}"
-
-    parsed = urlparse(url)
-
-    # Ensure that the URL contains a network location.
-    if not parsed.netloc:
-        raise ValueError("Invalid URL")
-
-    return url
-
-
-SECURITY_HEADERS = (
-    "Strict-Transport-Security",
-    "Content-Security-Policy",
-    "X-Content-Type-Options",
-    "X-Frame-Options",
-    "Referrer-Policy",
-)
+    try:
+        return _normalize_url(url)
+    except InvalidTargetError as error:
+        raise ValueError("Invalid URL") from error
 
 
 def check_security_headers(headers: dict[str, str]) -> dict[str, bool]:
@@ -44,7 +34,6 @@ def check_security_headers(headers: dict[str, str]) -> dict[str, bool]:
     Check whether important HTTP security headers are present.
     """
 
-    # HTTP header names are case-insensitive.
     normalized_headers = {
         key.lower(): value
         for key, value in headers.items()
@@ -59,40 +48,35 @@ def check_security_headers(headers: dict[str, str]) -> dict[str, bool]:
 def fetch_headers(url: str) -> dict[str, str]:
     """
     Send an HTTP request and return the server response headers.
+
+    Legacy API: may include sensitive headers such as Set-Cookie.
     """
 
     normalized_url = normalize_url(url)
 
-    # Identify SentinelPy with a custom User-Agent header.
     request = Request(
         normalized_url,
         headers={"User-Agent": "SentinelPy/0.1"},
     )
 
     try:
-        # Return headers from a successful HTTP response.
         with urlopen(request, timeout=10) as response:
             return dict(response.headers.items())
 
     except HTTPError as error:
-        # HTTP error responses can still contain useful headers.
         return dict(error.headers.items())
 
     except TimeoutError as error:
-        # FI: Käsittele urlopen()-funktion suoraan nostama aikakatkaisu.
-        # RU: Обрабатываем таймаут, который urlopen() выбросил напрямую.
         raise TimeoutError(
             "Request timed out after 10 seconds"
         ) from error
 
     except URLError as error:
-        # Report request timeouts separately from other network failures.
         if isinstance(error.reason, TimeoutError):
             raise TimeoutError(
                 "Request timed out after 10 seconds"
             ) from error
 
-        # Convert other low-level network failures into a clear application error.
         raise ConnectionError(
             f"Unable to reach target: {error.reason}"
         ) from error
@@ -101,6 +85,10 @@ def fetch_headers(url: str) -> dict[str, str]:
 def scan_site(url: str) -> dict[str, object]:
     """
     Scan a website and return a structured security result.
+
+    .. deprecated:: 0.2.0
+        Legacy API. Output may contain raw sensitive headers. Use the scan
+        command added in v0.2.0b instead.
     """
 
     normalized_url = normalize_url(url)

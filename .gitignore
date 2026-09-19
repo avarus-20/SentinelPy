@@ -14,3 +14,7 @@ __pycache__/
 # FI: Spyderin paikalliset projektiasetukset.
 # RU: Локальные настройки проекта Spyder.
 .spyproject/
+
+# FI: Setuptoolsin paikalliset metatiedostot.
+# RU: Локальные метаданные сборки setuptools.
+*.egg-info/
