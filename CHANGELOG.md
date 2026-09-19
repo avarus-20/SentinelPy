@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## [1.1.1] - 2026-09-19
+
+### Fixed
+
+- Restore deprecated `evaluate_presence_findings` export on `sentinelpy.checks` for 1.x import compatibility (removal planned for 2.0).
+
 ## [1.1.0] - 2026-09-19
 
 ### Added
@@ -9,13 +15,9 @@ All notable changes to this project are documented here.
 - JSON Schema validation tests for completed and error reports (`jsonschema` dev-only).
 - GitHub Actions pinned to full commit SHAs for supply-chain hardening.
 
-### Removed
-
-- Unused legacy `checks/presence.py` module (superseded by `checks/quality.py`).
-
 ### Notes
 
-- `sentinelpy.checks` now exports `evaluate_security_findings` instead of the removed presence helper.
+- `sentinelpy.checks` exports `evaluate_security_findings` as the supported API; `evaluate_presence_findings` remains deprecated (see 1.1.1).
 
 ## [1.0.2] - 2026-09-19
 
