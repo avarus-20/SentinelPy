@@ -193,6 +193,12 @@ def test_ci_doc_links_schema_and_golden_fixtures() -> None:
     assert re.search(r"exit code.*`0`", doc, re.IGNORECASE)
 
 
+def test_ci_doc_snippet_fails_on_exit_codes_two_and_three() -> None:
+    doc = _DOCS_CI.read_text(encoding="utf-8")
+    assert "exit_code == '2'" in doc
+    assert "exit_code == '3'" in doc
+
+
 def test_cli_exit_code_invalid_target_is_usage() -> None:
     assert run_scan_command(_cli_args("http://[")) == exit_codes.EXIT_USAGE
 
