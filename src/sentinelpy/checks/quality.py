@@ -26,9 +26,7 @@ _KNOWN_REFERRER_POLICIES = (
     "strict-origin-when-cross-origin",
     "unsafe-url",
 )
-_PERMISSIVE_REFERRER_POLICIES = frozenset(
-    {"unsafe-url", "no-referrer-when-downgrade"}
-)
+_PERMISSIVE_REFERRER_POLICIES = frozenset({"unsafe-url", "no-referrer-when-downgrade"})
 
 
 def evaluate_security_findings(
