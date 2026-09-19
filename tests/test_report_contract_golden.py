@@ -199,6 +199,12 @@ def test_ci_doc_snippet_fails_on_exit_codes_two_and_three() -> None:
     assert "exit_code == '3'" in doc
 
 
+def test_ci_doc_distinguishes_invalid_target_from_other_usage_errors() -> None:
+    doc = _DOCS_CI.read_text(encoding="utf-8")
+    assert "invalid_target" in doc
+    assert "--timeout" in doc or "before any report" in doc
+
+
 def test_cli_exit_code_invalid_target_is_usage() -> None:
     assert run_scan_command(_cli_args("http://[")) == exit_codes.EXIT_USAGE
 
