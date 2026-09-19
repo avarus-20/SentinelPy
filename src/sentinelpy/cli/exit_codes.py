@@ -1,0 +1,6 @@
+"""CLI exit codes."""
+
+EXIT_OK = 0
+EXIT_FINDINGS_FAILED = 1
+EXIT_USAGE = 2
+EXIT_SCAN_ERROR = 3
