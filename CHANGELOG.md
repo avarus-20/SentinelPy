@@ -2,7 +2,15 @@
 
 All notable changes to this project are documented here.
 
-## [Unreleased]
+## [1.2.1] - 2026-09-19
+
+### Added
+
+- JSON Schema contract tests for every scan error category (`invalid_target`, `timeout`, `connection`, `tls`, `internal`) with secret-leak guards.
+
+### Fixed
+
+- Stabilize JSON `--no-color` CLI test by fixing `scanned_at` during comparison (Codex PR #29).
 
 ### Fixed
 

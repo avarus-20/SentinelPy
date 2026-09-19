@@ -66,9 +66,13 @@ def test_cli_markdown_output_file_includes_report_sections(tmp_path):
 
 
 def test_cli_json_unaffected_by_no_color_flag(capsys):
-    with patch(
-        "sentinelpy.scan.runner.fetch",
-        return_value=_safe_http_response(),
+    fixed_ts = "2026-09-19T08:00:00Z"
+    with (
+        patch(
+            "sentinelpy.scan.runner.fetch",
+            return_value=_safe_http_response(),
+        ),
+        patch("sentinelpy.scan.runner._utc_timestamp", return_value=fixed_ts),
     ):
         main(["scan", "https://example.com", "--format", "json"])
         plain = capsys.readouterr().out
