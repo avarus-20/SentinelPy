@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## [Unreleased]
+
+### Fixed
+
+- Release workflow clears `dist/` before `python -m build` so stale wheels are never uploaded.
+
 ## [1.2.0] - 2026-09-19
 
 ### Added
