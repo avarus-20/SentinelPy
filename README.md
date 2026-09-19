@@ -31,6 +31,8 @@ sentinelpy scan https://example.com --format json --output report.json
 echo $?
 ```
 
+See [docs/ci-github-actions.md](docs/ci-github-actions.md) for exit codes, artifacts, and a GitHub Actions template.
+
 ## CLI
 
 ```text

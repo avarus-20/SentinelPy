@@ -1,0 +1,35 @@
+{
+  "disclaimer": "Authorized, read-only assessment of HTTP response headers. This report does not guarantee that the target is secure.",
+  "elapsed_ms": 0.0,
+  "error": {
+    "category": "invalid_target",
+    "message": "Invalid target URL."
+  },
+  "final_url": null,
+  "findings": [],
+  "http_status": null,
+  "limitations": [
+    "Follows HTTP redirects by default (additional GET per hop); use --no-redirects for one request. No crawling beyond the redirect chain.",
+    "Only five selected response headers are evaluated for presence.",
+    "Absence or presence of a header is not a complete security assessment.",
+    "Does not inspect HTML, cookies, JavaScript, or server-side logic.",
+    "Use only on systems you own or are explicitly authorized to test."
+  ],
+  "redirects": [],
+  "report_schema_version": "1.0.0",
+  "scan_status": "error",
+  "scanned_at": "2026-09-19T12:00:00Z",
+  "summary": {
+    "counts": {
+      "error": 0,
+      "fail": 0,
+      "info": 0,
+      "pass": 0,
+      "warning": 0
+    },
+    "status": "error"
+  },
+  "target_url": null,
+  "tool_name": "sentinelpy",
+  "tool_version": "1.3.0"
+}

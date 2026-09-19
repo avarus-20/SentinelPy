@@ -2,6 +2,14 @@
 
 All notable changes to this project are documented here.
 
+## [1.3.0] - 2026-09-19
+
+### Added
+
+- CI trust pack: [docs/ci-github-actions.md](docs/ci-github-actions.md) (exit codes 0–3, JSON/Markdown artifacts, safety notes).
+- Copy-paste GitHub Actions example: [examples/github-actions-sentinelpy.yml](examples/github-actions-sentinelpy.yml).
+- Golden completed/error JSON fixtures under `tests/fixtures/reports/` with regression tests against the live renderer and JSON Schema.
+
 ## [1.2.2] - 2026-09-19
 
 ### Added
