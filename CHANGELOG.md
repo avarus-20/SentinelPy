@@ -13,6 +13,7 @@ All notable changes to this project are documented here.
 - Quality checks: validate HSTS max-age, X-Frame-Options tokens, CSP unsafe keywords by source token, and effective Referrer-Policy.
 - Docs: define `dev` optional extra for `pip install -e ".[dev]"`; clarify redirect follow behavior vs a single GET.
 - Build: require setuptools 77+ so SPDX `license = "MIT"` metadata parses on isolated builds.
+- Reject malformed host/port during URL normalization so invalid targets never crash redaction.
 
 ## [1.0.0] - 2026-09-19
 

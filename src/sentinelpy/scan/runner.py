@@ -29,7 +29,10 @@ from sentinelpy.scan.options import ScanOptions
 from sentinelpy.scan.summary import summarize_findings
 
 _LIMITATIONS: tuple[str, ...] = (
-    "Follows HTTP redirects by default (additional GET per hop); use --no-redirects for one request. No crawling beyond the redirect chain.",
+    (
+        "Follows HTTP redirects by default (additional GET per hop); "
+        "use --no-redirects for one request. No crawling beyond the redirect chain."
+    ),
     "Only five selected response headers are evaluated for presence.",
     "Absence or presence of a header is not a complete security assessment.",
     "Does not inspect HTML, cookies, JavaScript, or server-side logic.",
@@ -58,7 +61,16 @@ def run_scan(target: str, *, options: ScanOptions | None = None) -> ScanReport:
             elapsed_ms=0.0,
         )
 
-    target_redacted = redact_url(normalized)
+    try:
+        target_redacted = redact_url(normalized)
+    except ValueError:
+        return _error_report(
+            scanned_at=scanned_at,
+            target_url=None,
+            category="invalid_target",
+            message="Invalid target URL.",
+            elapsed_ms=0.0,
+        )
     fetch_options = FetchOptions(
         timeout=opts.timeout,
         user_agent=opts.user_agent,

@@ -59,3 +59,11 @@ def test_normalize_url_rejects_bracket_host():
 
     with pytest.raises(InvalidTargetError):
         normalize_url("http://[")
+
+
+def test_run_scan_rejects_invalid_port():
+    report = run_scan("http://user@example.com:bad")
+
+    assert report.scan_status == "error"
+    assert report.error is not None
+    assert report.error.category == "invalid_target"

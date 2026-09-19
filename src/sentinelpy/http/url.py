@@ -37,6 +37,15 @@ def normalize_url(url: str) -> str:
     if not parsed.netloc or parsed.netloc in {"[", "]"}:
         raise InvalidTargetError("Invalid URL")
 
+    try:
+        hostname = parsed.hostname
+        _ = parsed.port
+    except ValueError as error:
+        raise InvalidTargetError("Invalid URL") from error
+
+    if not hostname:
+        raise InvalidTargetError("Invalid URL")
+
     return url
 
 
