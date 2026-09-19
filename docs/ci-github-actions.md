@@ -8,7 +8,7 @@ SentinelPy is designed for **authorized**, **read-only** checks of **one URL** p
 | --- | --- | --- |
 | `0` | Scan **completed**; summary is `passed` or `warning` | Job step succeeds; parse JSON if you gate on `summary.status`. |
 | `1` | Scan **completed**; summary is `failed` (header findings) | Fail the job if missing headers must block deploy; otherwise upload report and fail only when `summary.status == failed`. |
-| `2` | Usage error or **invalid target URL** (`error.category == invalid_target`) | Fail fast — fix workflow inputs. Report JSON may still be written if you call the API; CLI returns before useful output on some usage errors. |
+| `2` | Usage error or **invalid target URL** (`error.category == invalid_target`) | Fail fast — fix workflow inputs. With `--output`, the CLI still writes a structured error report before exiting `2`. |
 | `3` | Scan **error** (timeout, connection, TLS, internal) | Fail the job; inspect `error.category` and `error.message` in JSON (no stack traces). |
 
 **Important:** Exit code `0` includes **`warning`** outcomes (for example HTTP without HSTS). If your policy treats warnings like failures, check `summary.status` in `report.json` instead of relying on `$?` alone.
@@ -44,16 +44,24 @@ Neither artifact includes raw response header maps or cookies.
     set -e
     test -f report.json
 
-- name: Enforce policy
+- name: Enforce policy (failed findings)
   if: steps.scan.outputs.exit_code == '1'
   run: |
     python - <<'PY'
     import json, sys
-    data = json.load(open("report.json"))
+    data = json.load(open("report.json", encoding="utf-8"))
     if data.get("summary", {}).get("status") == "failed":
         sys.exit(1)
     PY
+
+- name: Fail on usage or scan errors
+  if: |
+    steps.scan.outputs.exit_code == '2' ||
+    steps.scan.outputs.exit_code == '3'
+  run: exit 1
 ```
+
+With `set +e`, the scan step exits **0** whenever `report.json` exists—even when SentinelPy returned **2** or **3**. Capture `exit_code` in outputs and add the step above (same pattern as the full [example workflow](../examples/github-actions-sentinelpy.yml)).
 
 Adjust the enforce step to match your risk tolerance (fail on `warning`, fail only on specific finding IDs, etc.).
 
