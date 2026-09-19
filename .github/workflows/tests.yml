@@ -17,10 +17,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364ed11269
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@8c4f8750aed24119619012ae2a62bd2f5b69220
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
 
