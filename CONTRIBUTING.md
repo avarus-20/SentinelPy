@@ -15,7 +15,8 @@ Thank you for helping improve SentinelPy. This project is a defensive, read-only
 ```bash
 python3.11 -m venv .venv
 source .venv/bin/activate
-pip install -e . --group dev
+pip install -e ".[dev]"
+# equivalent: pip install -e . --group dev
 pre-commit install
 pytest
 ```

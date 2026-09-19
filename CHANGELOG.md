@@ -2,6 +2,17 @@
 
 All notable changes to this project are documented here.
 
+## [1.0.2] - 2026-09-19
+
+### Fixed
+
+- Warn when Referrer-Policy is present but contains no recognized policy token.
+
+### Added
+
+- Post-release audit (`docs/audits/2026-09-19-post-release-audit.md`).
+- End-to-end JSON safety test for CSP bodies; Markdown report smoke tests.
+
 ## [1.0.1] - 2026-09-19
 
 ### Fixed
