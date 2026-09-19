@@ -62,7 +62,7 @@ def test_cli_invalid_target_exit_usage():
     report = ScanReport(
         report_schema_version=REPORT_SCHEMA_VERSION,
         tool_name="sentinelpy",
-        tool_version="0.3.0",
+        tool_version="0.4.0",
         scanned_at="2026-09-19T08:00:00Z",
         target_url=None,
         scan_status="error",
@@ -95,7 +95,7 @@ def test_cli_scan_error_exit_three():
     report = ScanReport(
         report_schema_version=REPORT_SCHEMA_VERSION,
         tool_name="sentinelpy",
-        tool_version="0.3.0",
+        tool_version="0.4.0",
         scanned_at="2026-09-19T08:00:00Z",
         target_url="https://example.com/",
         scan_status="error",
@@ -135,7 +135,7 @@ def _completed_report(*, failed: bool):
     return ScanReport(
         report_schema_version=REPORT_SCHEMA_VERSION,
         tool_name="sentinelpy",
-        tool_version="0.3.0",
+        tool_version="0.4.0",
         scanned_at="2026-09-19T08:00:00Z",
         target_url="https://example.com/",
         scan_status="completed",

@@ -54,7 +54,7 @@ def test_run_scan_https_missing_hsts_fails():
     ):
         report = run_scan("https://example.com")
 
-    hsts = next(f for f in report.findings if f.id == "HEADER-HSTS-PRESENT")
+    hsts = next(f for f in report.findings if f.id == "HEADER-HSTS")
     assert hsts.status == "fail"
     assert report.summary.status == "failed"
 
@@ -76,7 +76,7 @@ def test_run_scan_http_missing_hsts_is_warning_not_fail():
     ):
         report = run_scan("http://example.com")
 
-    hsts = next(f for f in report.findings if f.id == "HEADER-HSTS-PRESENT")
+    hsts = next(f for f in report.findings if f.id == "HEADER-HSTS")
     assert hsts.status == "warning"
     assert report.summary.status == "warning"
 
@@ -92,7 +92,7 @@ def test_run_scan_http_with_hsts_header_is_warning():
     ):
         report = run_scan("http://example.com")
 
-    hsts = next(f for f in report.findings if f.id == "HEADER-HSTS-PRESENT")
+    hsts = next(f for f in report.findings if f.id == "HEADER-HSTS")
     assert hsts.status == "warning"
     assert hsts.evidence["observed"] == "present_ignored_over_http"
 
