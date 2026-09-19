@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented here.
 
+## [1.2.0] - 2026-09-19
+
+### Added
+
+- CLI `--no-color` to disable ANSI styling for terminal format (JSON/Markdown unchanged).
+- End-to-end CLI tests for Markdown stdout and `--output` safety.
+
 ## [1.1.1] - 2026-09-19
 
 ### Fixed

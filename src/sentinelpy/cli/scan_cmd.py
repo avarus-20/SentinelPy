@@ -52,6 +52,14 @@ def add_scan_parser(
         action="store_true",
         help="Do not follow HTTP redirects",
     )
+    parser.add_argument(
+        "--no-color",
+        action="store_true",
+        help=(
+            "Disable ANSI colors for terminal format "
+            "(default: color when stdout is a TTY)"
+        ),
+    )
     parser.set_defaults(handler=run_scan_command)
 
 
@@ -82,7 +90,12 @@ def run_scan_command(args: argparse.Namespace) -> int:
         _stderr("Error: An internal error occurred.")
         return EXIT_SCAN_ERROR
 
-    use_color = args.output is None and sys.stdout.isatty()
+    use_color = (
+        args.format == "terminal"
+        and not args.no_color
+        and args.output is None
+        and sys.stdout.isatty()
+    )
     content = _render(report, args.format, use_color=use_color)
     if not _emit(content, args.output):
         return EXIT_SCAN_ERROR

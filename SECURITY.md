@@ -8,6 +8,7 @@ SentinelPy is a **local CLI** for authorized, read-only review of HTTP response 
 
 | Version | Supported |
 | --- | --- |
+| 1.2.x | yes |
 | 1.1.x | yes |
 | 1.0.x | yes |
 | < 1.0 | no |
