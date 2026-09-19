@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import re
 
-from sentinelpy.constants import SECURITY_HEADERS
 from sentinelpy.http.snapshot import SecurityHeaderSnapshot
 from sentinelpy.models.finding import Finding
 from sentinelpy.redaction.evidence import EvidenceBuilder
@@ -56,9 +55,7 @@ def _hsts_finding(snapshot: SecurityHeaderSnapshot, target_scheme: str) -> Findi
             ).to_dict()
             if "header_value_excerpt" in excerpt:
                 evidence["header_value_excerpt"] = excerpt["header_value_excerpt"]
-            explanation = (
-                "HSTS appeared on HTTP but browsers ignore it unless delivered over HTTPS."
-            )
+            explanation = "HSTS appeared on HTTP but browsers ignore it unless delivered over HTTPS."
         return Finding(
             id="HEADER-HSTS",
             title="Strict-Transport-Security (HTTP advisory)",
@@ -189,7 +186,7 @@ def _xcto_finding(snapshot: SecurityHeaderSnapshot) -> Finding:
                 raw_value=None,
             ).to_dict(),
             explanation="Missing X-Content-Type-Options may allow MIME sniffing.",
-            remediation='Set X-Content-Type-Options: nosniff on applicable responses.',
+            remediation="Set X-Content-Type-Options: nosniff on applicable responses.",
             reference=_OWASP_CHEATSHEET,
         )
     if value.strip().lower() != "nosniff":
@@ -204,7 +201,7 @@ def _xcto_finding(snapshot: SecurityHeaderSnapshot) -> Finding:
                 raw_value=value,
             ).to_dict(),
             explanation="Only the nosniff value is recommended for this header.",
-            remediation='Set X-Content-Type-Options: nosniff.',
+            remediation="Set X-Content-Type-Options: nosniff.",
             reference=_OWASP_CHEATSHEET,
         )
     return Finding(

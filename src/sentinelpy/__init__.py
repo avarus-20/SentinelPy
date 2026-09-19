@@ -9,8 +9,8 @@ from sentinelpy.exceptions import (
     TLSError,
 )
 from sentinelpy.http.url import normalize_url as normalize_target_url
-from sentinelpy.models.schema import REPORT_SCHEMA_VERSION
 from sentinelpy.models.report import ScanReport
+from sentinelpy.models.schema import REPORT_SCHEMA_VERSION
 from sentinelpy.redaction.url import redact_url
 from sentinelpy.reports.json import render_json
 from sentinelpy.scan import ScanOptions, run_scan

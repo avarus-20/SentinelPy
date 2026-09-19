@@ -42,7 +42,8 @@ class SecurityHeaderSnapshot:
         canonical = _CANONICAL_BY_LOWER.get(header_name.lower())
         if canonical is None:
             return None
-        return getattr(self, _FIELD_BY_HEADER[canonical])
+        value = getattr(self, _FIELD_BY_HEADER[canonical])
+        return value if isinstance(value, str) else None
 
 
 _FIELD_BY_HEADER = {

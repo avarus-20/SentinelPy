@@ -1,0 +1,19 @@
+name: Bug report
+description: Report incorrect behavior in SentinelPy
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not include real customer URLs, tokens, or response headers with secrets.
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce (synthetic targets only)
+    validations:
+      required: true

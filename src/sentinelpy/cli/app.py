@@ -15,9 +15,7 @@ def main(argv: list[str] | None = None) -> int:
 
     parser = argparse.ArgumentParser(
         prog="sentinelpy",
-        description=(
-            "Authorized, read-only HTTP security header checks for one URL."
-        ),
+        description=("Authorized, read-only HTTP security header checks for one URL."),
     )
     parser.add_argument(
         "--version",

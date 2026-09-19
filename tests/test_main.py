@@ -80,6 +80,7 @@ def test_fetch_headers_returns_headers_from_http_error():
 
     assert result["Content-Security-Policy"] == "default-src 'self'"
 
+
 def test_scan_site_returns_structured_result():
     # Use a mocked response to avoid a real network request.
     fake_headers = {
@@ -95,6 +96,7 @@ def test_scan_site_returns_structured_result():
     assert result["security_headers"]["Strict-Transport-Security"] is True
     assert result["security_headers"]["Content-Security-Policy"] is False
 
+
 def test_fetch_headers_raises_connection_error_on_url_error():
     # Simulate a low-level network failure.
     error = URLError("Name or service not known")
@@ -105,6 +107,7 @@ def test_fetch_headers_raises_connection_error_on_url_error():
             assert False, "Expected ConnectionError"
         except ConnectionError as connection_error:
             assert "Unable to reach target" in str(connection_error)
+
 
 def test_fetch_headers_raises_timeout_error_on_timeout():
     # Simulate a request timeout without waiting for a real network delay.

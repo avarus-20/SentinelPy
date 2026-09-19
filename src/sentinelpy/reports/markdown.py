@@ -26,8 +26,8 @@ def render_markdown(report: ScanReport) -> str:
         "",
         "## Target information",
         "",
-        f"| Field | Value |",
-        f"| --- | --- |",
+        "| Field | Value |",
+        "| --- | --- |",
         f"| Target URL | {report.target_url} |",
         f"| Final URL | {report.final_url} |",
         f"| HTTP status | {report.http_status} |",
@@ -39,9 +39,11 @@ def render_markdown(report: ScanReport) -> str:
         "| --- | --- | --- | --- |",
     ]
     for finding in report.findings:
-        lines.append(
-            f"| {finding.id} | {finding.status} | {finding.severity} | {finding.title} |"
+        row = (
+            f"| {finding.id} | {finding.status} | "
+            f"{finding.severity} | {finding.title} |"
         )
+        lines.append(row)
 
     if report.findings:
         lines.extend(["", "## Finding details", ""])

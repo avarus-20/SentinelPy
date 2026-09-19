@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from sentinelpy.models.finding import Finding
-from sentinelpy.models.report import ScanSummary, SummaryCounts
+from sentinelpy.models.report import ScanSummary, SummaryCounts, SummaryStatus
 
 
 def summarize_findings(findings: tuple[Finding, ...]) -> ScanSummary:
@@ -32,6 +32,7 @@ def summarize_findings(findings: tuple[Finding, ...]) -> ScanSummary:
         info=0,
     )
 
+    status: SummaryStatus
     if fail > 0:
         status = "failed"
     elif warning > 0:

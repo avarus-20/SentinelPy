@@ -1,13 +1,10 @@
 import importlib
-import json
-
-import pytest
 
 import sentinelpy
 
 
 def test_version_matches_package_metadata():
-    assert sentinelpy.__version__ == "0.4.0"
+    assert sentinelpy.__version__ == "0.5.0"
 
 
 def test_public_api_exposes_redaction_and_schema_version():

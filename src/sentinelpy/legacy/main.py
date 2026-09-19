@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 
 """
 Legacy SentinelPy API (v0.1 compatibility).
@@ -34,15 +33,9 @@ def check_security_headers(headers: dict[str, str]) -> dict[str, bool]:
     Check whether important HTTP security headers are present.
     """
 
-    normalized_headers = {
-        key.lower(): value
-        for key, value in headers.items()
-    }
+    normalized_headers = {key.lower(): value for key, value in headers.items()}
 
-    return {
-        header: header.lower() in normalized_headers
-        for header in SECURITY_HEADERS
-    }
+    return {header: header.lower() in normalized_headers for header in SECURITY_HEADERS}
 
 
 def fetch_headers(url: str) -> dict[str, str]:
@@ -67,19 +60,13 @@ def fetch_headers(url: str) -> dict[str, str]:
         return dict(error.headers.items())
 
     except TimeoutError as error:
-        raise TimeoutError(
-            "Request timed out after 10 seconds"
-        ) from error
+        raise TimeoutError("Request timed out after 10 seconds") from error
 
     except URLError as error:
         if isinstance(error.reason, TimeoutError):
-            raise TimeoutError(
-                "Request timed out after 10 seconds"
-            ) from error
+            raise TimeoutError("Request timed out after 10 seconds") from error
 
-        raise ConnectionError(
-            f"Unable to reach target: {error.reason}"
-        ) from error
+        raise ConnectionError(f"Unable to reach target: {error.reason}") from error
 
 
 def scan_site(url: str) -> dict[str, object]:

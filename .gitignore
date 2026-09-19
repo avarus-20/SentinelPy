@@ -18,3 +18,8 @@ __pycache__/
 # FI: Setuptoolsin paikalliset metatiedostot.
 # RU: Локальные метаданные сборки setuptools.
 *.egg-info/
+
+# FI: Coverage data files.
+# RU: Файлы данных coverage.
+.coverage
+htmlcov/

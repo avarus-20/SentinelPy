@@ -4,10 +4,9 @@ from unittest.mock import patch
 import pytest
 
 from sentinelpy.exceptions import NetworkError, RequestTimeoutError, TLSError
-from sentinelpy.http.client import FetchOptions
 from sentinelpy.models.http_meta import HttpResponse, RedirectHop
-from sentinelpy.reports.json import render_json
 from sentinelpy.redaction.url import redact_url
+from sentinelpy.reports.json import render_json
 from sentinelpy.scan.runner import run_scan
 
 
