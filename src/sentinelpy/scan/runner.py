@@ -29,7 +29,7 @@ from sentinelpy.scan.options import ScanOptions
 from sentinelpy.scan.summary import summarize_findings
 
 _LIMITATIONS: tuple[str, ...] = (
-    "Single HTTP GET to one URL; redirects are recorded but not crawled.",
+    "Follows HTTP redirects by default (additional GET per hop); use --no-redirects for one request. No crawling beyond the redirect chain.",
     "Only five selected response headers are evaluated for presence.",
     "Absence or presence of a header is not a complete security assessment.",
     "Does not inspect HTML, cookies, JavaScript, or server-side logic.",

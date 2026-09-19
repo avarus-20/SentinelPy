@@ -69,7 +69,7 @@ Machine-readable reports use `report_schema_version` (currently `1.0.0`). See [d
 ## Safety scope and limitations
 
 - Use only on systems you **own** or are **explicitly authorized** to test.
-- One GET request; redirects are recorded, not crawled.
+- By default the client **follows HTTP redirects** (one additional GET per hop; the final URL may differ). Use `--no-redirects` for a single request. No crawling beyond that redirect chain.
 - Public reports **never** include raw cookies, authorization headers, or full header dumps.
 - TLS certificate verification is **never** disabled.
 
