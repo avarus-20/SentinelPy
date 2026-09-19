@@ -10,6 +10,8 @@ import ssl
 import time
 from dataclasses import dataclass
 from urllib.error import HTTPError, URLError
+from typing import Any
+
 from urllib.request import HTTPRedirectHandler, Request, build_opener
 
 from sentinelpy._version import __version__
@@ -40,10 +42,10 @@ class _RecordingRedirectHandler(HTTPRedirectHandler):
     def redirect_request(
         self,
         req: Request,
-        fp,
+        fp: Any,
         code: int,
         msg: str,
-        headers,
+        headers: Any,
         newurl: str,
     ) -> Request | None:
         self.hops.append(
@@ -62,10 +64,10 @@ class _NoRedirectHandler(HTTPRedirectHandler):
     def redirect_request(
         self,
         req: Request,
-        fp,
+        fp: Any,
         code: int,
         msg: str,
-        headers,
+        headers: Any,
         newurl: str,
     ) -> Request | None:
         return None

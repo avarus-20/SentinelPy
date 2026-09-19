@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import argparse
 import sys
-from typing import TextIO
 
 from sentinelpy.models.report import ScanReport
 from sentinelpy.reports.json import render_json
@@ -15,7 +14,9 @@ from sentinelpy.scan import ScanOptions, run_scan
 _FORMATS = frozenset({"terminal", "json", "markdown"})
 
 
-def add_scan_parser(subparsers: argparse._SubParsersAction) -> None:
+def add_scan_parser(
+    subparsers: argparse._SubParsersAction[argparse.ArgumentParser],
+) -> None:
     """Register the scan subcommand."""
 
     parser = subparsers.add_parser(

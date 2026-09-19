@@ -1,89 +1,93 @@
 # SentinelPy
 
-SentinelPy is a small Python tool for checking common website security-related HTTP response headers.
-It is a defensive, read-only learning project: it sends a normal HTTP request, reads response headers,
-and reports whether selected security headers are present.
+SentinelPy is a **local**, **authorized**, **read-only** CLI that checks selected HTTP response security headers for **one URL** and produces professional reports.
+
+It is **not** a penetration-testing tool and **does not guarantee** that a website is secure. It performs a limited configuration review of a single HTTP response.
 
 ## What it checks
 
-SentinelPy currently checks for these headers:
-
-- `Strict-Transport-Security`
-- `Content-Security-Policy`
-- `X-Content-Type-Options`
+- `Strict-Transport-Security` (with HTTP advisory semantics)
+- `Content-Security-Policy` (conservative quality hints)
+- `X-Content-Type-Options` (`nosniff`)
 - `X-Frame-Options`
 - `Referrer-Policy`
 
-A missing header is not a complete security assessment. It is a signal for review.
-The tool does not exploit, brute-force, crawl, log in, submit forms, or modify the target website.
-
-## Project status
-
-This repository is a public code sample and learning project. It demonstrates:
-
-- Python project structure
-- URL normalization
-- HTTP request handling
-- security-header checking
-- handling headers returned with HTTP error responses
-- unit tests with mocked network calls
-
-## Requirements
-
-- Python 3.11 or newer
-- pytest for running tests
-
-## Install for local development
+## Quick start
 
 ```bash
 git clone https://github.com/avarus-20/SentinelPy.git
 cd SentinelPy
-python -m venv .venv
+python3.11 -m venv .venv
 source .venv/bin/activate
-python -m pip install -U pip pytest
+python -m pip install -U pip
+pip install -e .
+sentinelpy scan https://example.com
 ```
 
-On Windows PowerShell:
+JSON for CI:
 
-```powershell
-git clone https://github.com/avarus-20/SentinelPy.git
-cd SentinelPy
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install -U pip pytest
+```bash
+sentinelpy scan https://example.com --format json --output report.json
+echo $?
 ```
 
-## Example use
+## CLI
 
-The current code exposes reusable functions in `sentinelpy/main.py`.
-For example, another Python file can import and use them like this:
+```text
+sentinelpy scan TARGET_URL [--format terminal|json|markdown] [--output PATH]
+                         [--timeout SECONDS] [--user-agent STRING] [--no-redirects]
+sentinelpy --version
+sentinelpy --help
+```
+
+### Exit codes
+
+| Code | Meaning |
+| --- | --- |
+| `0` | Scan completed; summary `passed` or `warning` |
+| `1` | Scan completed; summary `failed` |
+| `2` | Usage / invalid target URL |
+| `3` | Scan error (timeout, connection, TLS, internal) |
+
+## Python API
 
 ```python
-from sentinelpy.main import fetch_headers, check_security_headers
+from sentinelpy import run_scan, render_json
 
-headers = fetch_headers("example.com")
-result = check_security_headers(headers)
-
-for header, present in result.items():
-    print(f"{header}: {'present' if present else 'missing'}")
+report = run_scan("https://example.com")
+print(render_json(report))
 ```
 
-These functions can be imported and reused from another Python module.
+Legacy v0.1 helpers remain importable from `sentinelpy.main` but may expose raw headers (deprecated).
 
-## Run tests
+## JSON report schema
+
+Machine-readable reports use `report_schema_version` (currently `1.0.0`). See [docs/report-schema-1.0.0.json](docs/report-schema-1.0.0.json).
+
+**Compatibility:** semver for the report schema — patch/minor additive changes only; major bumps may rename or retype required fields.
+
+## Safety scope and limitations
+
+- Use only on systems you **own** or are **explicitly authorized** to test.
+- One GET request; redirects are recorded, not crawled.
+- Public reports **never** include raw cookies, authorization headers, or full header dumps.
+- TLS certificate verification is **never** disabled.
+
+## Development
 
 ```bash
-python -m pytest
+pip install -e ".[dev]"  # or: pip install -e . --group dev
+pytest
+ruff check src tests
+ruff format --check src tests
+mypy
+pre-commit run --all-files
 ```
 
-The tests avoid real network calls where possible by using mocks. They check URL normalization,
-security-header detection, normal response headers, and headers returned together with an HTTP error.
+## Responsible disclosure
 
-## Safety scope
-
-Use this only on websites you own or are explicitly allowed to check. SentinelPy is not a penetration-testing
-tool and does not guarantee that a website is secure. It only checks a small set of HTTP response headers.
+See [SECURITY.md](SECURITY.md).
 
 ## License
 
-This project is licensed under the MIT License. See [LICENSE](LICENSE).
+MIT — see [LICENSE](LICENSE).

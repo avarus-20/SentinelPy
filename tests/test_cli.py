@@ -1,4 +1,3 @@
-import json
 import subprocess
 import sys
 from unittest.mock import patch
@@ -10,7 +9,6 @@ from sentinelpy.cli.exit_codes import (
     EXIT_SCAN_ERROR,
     EXIT_USAGE,
 )
-from sentinelpy.models.http_meta import HttpResponse
 
 
 def _run_cli(*args: str) -> int:
@@ -62,7 +60,7 @@ def test_cli_invalid_target_exit_usage():
     report = ScanReport(
         report_schema_version=REPORT_SCHEMA_VERSION,
         tool_name="sentinelpy",
-        tool_version="0.4.0",
+        tool_version="0.5.0",
         scanned_at="2026-09-19T08:00:00Z",
         target_url=None,
         scan_status="error",
@@ -95,7 +93,7 @@ def test_cli_scan_error_exit_three():
     report = ScanReport(
         report_schema_version=REPORT_SCHEMA_VERSION,
         tool_name="sentinelpy",
-        tool_version="0.4.0",
+        tool_version="0.5.0",
         scanned_at="2026-09-19T08:00:00Z",
         target_url="https://example.com/",
         scan_status="error",
@@ -127,7 +125,12 @@ def test_module_entrypoint_lists_scan_command():
 
 
 def _completed_report(*, failed: bool):
-    from sentinelpy.models.report import ScanReport, ScanSummary, SummaryCounts, default_disclaimer
+    from sentinelpy.models.report import (
+        ScanReport,
+        ScanSummary,
+        SummaryCounts,
+        default_disclaimer,
+    )
     from sentinelpy.models.schema import REPORT_SCHEMA_VERSION
 
     status = "failed" if failed else "passed"
@@ -135,7 +138,7 @@ def _completed_report(*, failed: bool):
     return ScanReport(
         report_schema_version=REPORT_SCHEMA_VERSION,
         tool_name="sentinelpy",
-        tool_version="0.4.0",
+        tool_version="0.5.0",
         scanned_at="2026-09-19T08:00:00Z",
         target_url="https://example.com/",
         scan_status="completed",

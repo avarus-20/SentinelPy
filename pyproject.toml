@@ -4,13 +4,23 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sentinelpy"
-version = "0.4.0"
-description = "A Python tool for checking common website security configurations."
+version = "0.5.0"
+description = "Authorized, read-only HTTP security header checks for one URL."
 readme = "README.md"
 requires-python = ">=3.11"
+license = { text = "MIT" }
 
 [project.scripts]
 sentinelpy = "sentinelpy.cli.app:main"
+
+[dependency-groups]
+dev = [
+    "mypy>=1.11",
+    "pre-commit>=3.8",
+    "pytest>=8.3",
+    "pytest-cov>=5.0",
+    "ruff>=0.6",
+]
 
 [tool.setuptools.packages.find]
 where = ["src"]
@@ -18,3 +28,30 @@ where = ["src"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["src"]
+addopts = "--cov=sentinelpy --cov-report=term-missing"
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.ruff.lint.per-file-ignores]
+"src/sentinelpy/checks/quality.py" = ["E501"]
+"tests/test_main.py" = ["B011"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+packages = ["sentinelpy"]
+mypy_path = "src"
+
+[tool.coverage.run]
+branch = true
+source = ["sentinelpy"]
+
+[tool.coverage.report]
+fail_under = 80
+show_missing = true
