@@ -62,7 +62,7 @@ Legacy v0.1 helpers remain importable from `sentinelpy.main` but may expose raw 
 
 ## JSON report schema
 
-Machine-readable reports use `report_schema_version` (currently `1.0.0`). See [docs/report-schema-1.0.0.json](docs/report-schema-1.0.0.json).
+Machine-readable reports use `report_schema_version` (currently `1.0.0`). See [docs/report-schema-1.0.0.json](docs/report-schema-1.0.0.json). CI validates representative reports against this schema (dev dependency `jsonschema` only).
 
 **Compatibility:** semver for the report schema — patch/minor additive changes only; major bumps may rename or retype required fields.
 

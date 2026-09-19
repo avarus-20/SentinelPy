@@ -2,6 +2,21 @@
 
 All notable changes to this project are documented here.
 
+## [1.1.0] - 2026-09-19
+
+### Added
+
+- JSON Schema validation tests for completed and error reports (`jsonschema` dev-only).
+- GitHub Actions pinned to full commit SHAs for supply-chain hardening.
+
+### Removed
+
+- Unused legacy `checks/presence.py` module (superseded by `checks/quality.py`).
+
+### Notes
+
+- `sentinelpy.checks` now exports `evaluate_security_findings` instead of the removed presence helper.
+
 ## [1.0.2] - 2026-09-19
 
 ### Fixed
