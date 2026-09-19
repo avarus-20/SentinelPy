@@ -9,9 +9,8 @@ from __future__ import annotations
 import ssl
 import time
 from dataclasses import dataclass
-from urllib.error import HTTPError, URLError
 from typing import Any
-
+from urllib.error import HTTPError, URLError
 from urllib.request import HTTPRedirectHandler, Request, build_opener
 
 from sentinelpy._version import __version__
