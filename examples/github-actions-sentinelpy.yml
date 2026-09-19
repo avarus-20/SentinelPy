@@ -28,7 +28,7 @@ jobs:
       - name: Install SentinelPy (pin tag or SHA in production)
         run: |
           python -m pip install --upgrade pip
-          pip install "git+https://github.com/avarus-20/SentinelPy@v1.3.0"
+          pip install "git+https://github.com/avarus-20/SentinelPy@v1.2.1"
 
       - name: Scan — JSON report
         id: json_scan
