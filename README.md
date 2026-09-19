@@ -2,6 +2,10 @@
 
 SentinelPy is a **local**, **authorized**, **read-only** CLI that checks selected HTTP response security headers for **one URL** and produces professional reports.
 
+## Project status
+
+The project is **feature-complete** at **[v1.2.1](https://github.com/avarus-20/SentinelPy/releases/tag/v1.2.1)** and in **maintenance-only** mode (security, correctness, packaging, and compatibility fixes). See [PROJECT_STATUS.md](PROJECT_STATUS.md).
+
 It is **not** a penetration-testing tool and **does not guarantee** that a website is secure. It performs a limited configuration review of a single HTTP response.
 
 ## What it checks
@@ -30,8 +34,6 @@ JSON for CI:
 sentinelpy scan https://example.com --format json --output report.json
 echo $?
 ```
-
-See [docs/ci-github-actions.md](docs/ci-github-actions.md) for exit codes, artifacts, and a GitHub Actions template.
 
 ## CLI
 
