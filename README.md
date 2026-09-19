@@ -18,15 +18,20 @@ It is **not** a penetration-testing tool and **does not guarantee** that a websi
 
 ## Quick start
 
+Install the **stable** release (**v1.2.1**), not floating `main` (which may carry newer metadata only):
+
 ```bash
 git clone https://github.com/avarus-20/SentinelPy.git
 cd SentinelPy
+git checkout v1.2.1
 python3.11 -m venv .venv
 source .venv/bin/activate
 python -m pip install -U pip
 pip install -e .
 sentinelpy scan https://example.com
 ```
+
+Alternative without a clone: `pip install "git+https://github.com/avarus-20/SentinelPy@v1.2.1"` or install the wheel from [Releases](https://github.com/avarus-20/SentinelPy/releases/tag/v1.2.1).
 
 JSON for CI:
 
