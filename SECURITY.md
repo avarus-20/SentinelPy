@@ -6,11 +6,14 @@ SentinelPy is a **local CLI** for authorized, read-only review of HTTP response 
 
 ## Supported versions
 
+Current stable release: **[v1.3.0](https://github.com/avarus-20/SentinelPy/releases/tag/v1.3.0)**. Report security issues against the latest **1.3.x** tag when possible.
+
 | Version | Supported |
 | --- | --- |
-| 1.2.x | yes |
-| 1.1.x | yes |
-| 1.0.x | yes |
+| 1.3.x | yes |
+| 1.2.x | yes (maintenance; upgrade to 1.3.x recommended) |
+| 1.1.x | best effort |
+| 1.0.x | best effort |
 | < 1.0 | no |
 
 ## Reporting a vulnerability
