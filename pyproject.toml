@@ -16,7 +16,7 @@ sentinelpy = "sentinelpy.cli.app:main"
 
 [project.optional-dependencies]
 dev = [
-    "jsonschema>=4.23",
+    "jsonschema>=4.26.0",
     "mypy>=1.11",
     "pre-commit>=3.8",
     "pytest>=9.1.1",
@@ -26,7 +26,7 @@ dev = [
 
 [dependency-groups]
 dev = [
-    "jsonschema>=4.23",
+    "jsonschema>=4.26.0",
     "mypy>=1.11",
     "pre-commit>=3.8",
     "pytest>=9.1.1",
